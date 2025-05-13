@@ -1,0 +1,10 @@
+graph LR;
+    A[axdma] --> B[DmaAllocator]
+B --> C[DefaultByteAllocator]
+B --> D[alloc_coherent]
+B --> E[dealloc_coherent]
+D --> F[Bytes]
+D --> G[Pages]
+A --> H[DMAInfo]
+H --> I[bus_addr]
+H --> J[cpu_addr]

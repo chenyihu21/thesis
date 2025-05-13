@@ -1,0 +1,84 @@
+% !TeX root = ../cyh.tex
+
+\chapter{starry-next 宏内核}
+
+\section{starry-next 宏内核整体架构}
+
+Starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。它实现了一个兼容 Linux 的系统调用接口，同时支持多种硬件架构，包括 x86\_64、riscv64、aarch64 和 loongarch64。
+
+代码结构上，Starry-next 主要由以下模块组成：
+
+\begin{itemize}
+\item core：基于 ArceOS 的底层支持实现 StarryOS 的核心内核功能，包括内存管理（mm）、任务管理（task）和时间管理（time）等。其中内存管理模块负责分配、释放和映射，如 copy\_from\_kernel 函数用于将内核空间的映射复制到用户地址空间，load\_user\_app 函数用于加载用户应用程序到内存中。任务管理模块处理任务和线程的创建、调度和管理，例如 new\_user\_task 函数用于创建新的用户任务。时间管理模块管理系统时间和定时器。
+\item api: 现面向用户的 API 和系统调用接口，涵盖文件系统操作、进程管理、线程管理、内存管理等多个方面。
+\item src：主要负责启动主函数、加载应用程序并对系统调用的分发进行处理。
+\item 其他：包括用于适配不同架构的配置文件和工具链，以及用于构建和运行 StarryOS 的构建工具和脚本。
+\end{itemize}
+
+功能上，Starry-next 也可以划分为较为独立的模块：
+
+\begin{itemize}
+\item 内存管理模块：负责管理物理内存和虚拟内存，包括内存分配、映射和释放等操作。
+\item 进程管理模块：负责管理进程和线程，包括进程创建、调度和管理等操作。
+\item 文件系统模块：负责管理文件系统，包括文件的创建、读取、写入和删除等操作。
+\item 网络模块：负责管理网络操作，包括网络协议栈、网络设备驱动等操作。
+\item 系统信息模块：负责提供系统信息和状态，包括 CPU、内存、网络等信息。
+\item 信号模块：负责处理信号和中断，包括信号的发送、接收和处理等操作。
+\end{itemize}
+
+每个功能模块都需要向应用程序提供相应的系统调用接口，为应用程序提供内核服务。同时，功能模块还需要尽可能复用 ArceOS 的底层组件和接口，以减少代码的重复和维护成本。
+功能模块之间通过明确定义的接口进行通信，确保系统的稳定性和可拓展性。
+
+通过结构和功能上的划分与解耦，Starry-next 宏内核的每个模块都可以独立开发、测试和维护，增强了系统的可拓展性和稳定性，也使得本课题大方向上的多名开发者可以在同一代码库上进行协作开发。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth, keepaspectratio]{starry-arch.png}
+    \caption{starry-next 宏内核架构}
+    \label{fig:starry-next}
+\end{figure}
+
+\section{starry-next 初始化和运行过程}
+
+% Starry-next 以 main 函数作为系统的入口点，创建初始化进程，为环境变量指定的测试用例创建用户应用程序，并依次运行这些应用程序。在运行过程中，Starry-next 会根据系统资源的需求，动态地分配和管理内存，同时处理各种系统调用，如 fork、exec、wait、mmap、munmap 等。
+
+starry-next 的初始化从 Bootloader 将控制权交给内核入口点开始，之后 ArceOS 的 axhal 模块和 axruntime 模块会完成硬件的初始化，并根据选择的特性进行内存管理器、任务管理器、文件系统、网络等模块的初始化。接着，axruntime 模块以 src 中 main 函数创建一个初始化进程，进而为环境变量指定的测试用例创建用户应用程序，并将用户程序加载到内存中。
+
+% 在运行过程中，starry-next 会根据系统资源的需求，动态地分配和管理内存，同时处理各种系统调用，如 fork、exec、wait、mmap、munmap 等。这些系统调用会使操作系统内核进入内核态，执行 core 中相应的处理程序，并调用底层的 ArceOS 提供的接口进行处理。
+% 最后的处理结果将返回系统调用层，进而返回给用户空间的应用程序。
+
+在运行过程中，starry-next 会逐个运行应用程序，并根据系统资源的需求，动态地分配和管理内存。
+当应用程序发起系统调用时，先由 src 层将参数根据系系统调用号分发到 api 层的相应处理函数，
+api 层的函数会检查参数的类型、取值范围等是否符合系统调用的规范。验证参数无误后，api 层函数会根据系统调用的具体功能，调用 core 层的相关功能模块及其底层的 ArceOS 组件来完成实际的操作。
+当 core 层完成操作并返回结果后，api 层会对返回结果进行处理。如果操作成功，api 层会将结果按照系统调用的约定进行封装，以便返回给应用程序。如果操作失败，api 层会根据错误类型设置合适的错误码。
+最后，api 层的函数会将处理结果返回给 src 层，src 层会将结果返回给应用程序。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth,height=8cm, keepaspectratio]{syscall2.png}
+    \caption{系统调用流程}
+    \label{fig:syscall}
+\end{figure}
+
+
+\section{内存布局}
+
+
+\section{starry-next 内存管理机制}
+
+starry-next 的内存管理基本上复用了 ArceOS 的内存管理机制:使用 ArceOS 提供的 AddrSpace 结构体管理用户程序的内存空间，当用户程序需要对内存进行操作时，会调用相应的系统调用，如 mmap、munmap、mprotect、mremap 等，这些系统调用会调用 AddrSpace 结构体的接口在用户地址空间中创建和管理内存映射，同时也会调用全局内存分配器进行物理页的分配和映射。
+
+但作为宏内核，starry-next 需要区分内核态和用户态，因此还对内存管理进行了进一步的优化和扩展，例如为用户态和内核态分别设置了不同的地址空间，并且用户态进程不能直接访问内核态内存空间，
+而是需要发出系统调用，通过 trap 机制进入内核态，再进行对应处理，通过这种方式来实现用户态和内核态的隔离；在一些架构中将内核部分的映射复制到用户地址空间，使用户态进程可以直接访问内核的某些数据结构或代码片段，
+可以减少内核态和用户态之间的切换开销，提高系统的性能。
+
+在页面异常的处理方面，starry-next 还增加了判断：如果是用户态程序访问内存空间或者是内核态程序访问用户内存空间时触发的缺页异常，才会调用用户程序的 handle\_page\_fault 函数，
+也就是 ArceOS 的 AddrSpace 结构体提供的页面错误处理函数处理缺页异常，该函数会根据虚拟地址的映射关系，调用全局内存分配器进行物理页的分配和映射。
+如果 AddrSpace 结构体不能成功处理该异常，则会打印错误信息并终止当前任务，并发送 SIGSEGV 信号。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{pagefault-starry.png}
+    \caption{starry-next 页异常处理}
+    \label{fig:pagefault-starry}
+\end{figure}
