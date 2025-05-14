@@ -33,7 +33,7 @@ Starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。�
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{starry-arch.png}
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{starry-arch.png}
     \caption{starry-next 宏内核架构}
     \label{fig:starry-next}
 \end{figure}
@@ -55,34 +55,92 @@ api 层的函数会检查参数的类型、取值范围等是否符合系统调�
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth,height=8cm, keepaspectratio]{syscall2.png}
+    \includegraphics[width=1\linewidth, keepaspectratio]{syscall.png}
     \caption{系统调用流程}
     \label{fig:syscall}
 \end{figure}
 
 
-\section{内存布局}
+\section{starry-next 内存管理模块}
 
-不启动 ArceOs 的 paging 特性时，应用和内核在同一空间中运行，系统直接使用物理地址。物理空间的结构如图\ref{fig:phy-layout}所示。
+\subsection{模块结构}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth, keepaspectratio]{mm-arch2.png}
+    \caption{starry-next 内存管理模块结构}
+    \label{fig:mm-arch}
+\end{figure}
+
+starry-next 的内存管理模块主要由以下部分组成：
+
+\begin{itemize}
+    \item 系统调用：提供了一系列系统调用接口，用于管理内存，如 mmap、munmap、mprotect、brk 等。
+    \item 地址空间管理：使用 AddrSpace 结构体及其接口管理用户程序的地址空间，包括内存映射、权限控制等。
+    \item 页面异常处理：当用户程序访问内存空间时触发的缺页异常会调用相应的处理函数。
+    \item 内存布局：定义了内存布局，包括内核空间和用户空间的划分。
+    \item 安全内存访问：通过指针封装提供对用户空间内存的安全访问。
+\end{itemize}
+
+\subsection{内存管理机制}
+
+starry-next 的内存管理基本上复用了 ArceOS 的内存管理机制:使用 ArceOS 提供的 AddrSpace 结构体管理用户程序的内存空间，当用户程序需要对内存进行操作时，会调用相应的系统调用，如 mmap、munmap、mprotect、mremap 等，这些系统调用会调用 AddrSpace 结构体的接口在用户地址空间中创建和管理内存映射，同时也会调用全局内存分配器进行物理页的分配和映射。
+
+但作为宏内核，starry-next 需要区分内核态和用户态，因此还对内存管理进行了进一步的优化和扩展，例如为用户态和内核态分别设置了不同的地址空间，并且用户态进程不能直接访问内核态内存空间，
+而是需要发出系统调用，通过 trap 机制进入内核态，再进行对应处理，通过这种方式来实现用户态和内核态的隔离；在一些架构中将内核部分的映射复制到用户地址空间，使用户态进程可以直接访问内核的某些数据结构或代码片段，
+可以减少内核态和用户态之间的切换开销，提高系统的性能。
+
+\subsection{页面异常处理}
+页面异常的处理方面，starry-next 在 ArceOS 的基础上增加了判断：如果是用户态程序访问内存空间或者是内核态程序访问用户内存空间时触发的缺页异常，才会调用用户程序的 handle\_page\_fault 函数，
+也就是 ArceOS 的 AddrSpace 结构体提供的页面错误处理函数处理缺页异常，该函数会根据虚拟地址的映射关系，调用全局内存分配器进行物理页的分配和映射。
+如果 AddrSpace 结构体不能成功处理该异常，则会打印错误信息并终止当前任务，并发送 SIGSEGV 信号。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth, height=14cm,keepaspectratio]{pagefault-starry.png}
+    \caption{starry-next 页异常处理}
+    \label{fig:pagefault-starry}
+\end{figure}
+
+\subsection{内存布局}
+
+不启动 ArceOs 的 paging 特性时，应用和内核在同一空间中运行，系统直接使用物理地址。物理空间的结构如图\ref{fig:phy-layout2}所示。
 在 Cargo 项目启动时，axhal 组件的 build.rs 构建文件会根据根据 linker.lds.S 文件中的链接脚本，将物理空间划分为多个部分——内核部分从指定的基地址开始，首先放置可执行代码段（.text），然后是只读数据段（.rodata）和初始化函数数组（.init\_array）。接着是可读写数据段（.data），线程局部存储相关段（.tdata 和 .tbss），以及每个CPU核心的私有数据段（.percpu）。最后是未初始化数据段（.bss），其中包含了启动栈空间，设备内存则位于 0 地址和内核空间之间。整个布局严格遵循4K对齐，并在最后定义了一些与中断处理、系统调用等相关的自定义段。
 
-
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth, keepaspectratio]{phy-layout.png}
-    \caption{物理内存布局}
-    \label{fig:phy-layout}
+\centering %图片全局居中
+%并排几个图，就要写几个minipage
+\begin{minipage}[b]{0.45\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+\centering %图片局部居中
+\includegraphics[width=0.8\textwidth]{phy-layout.png} %此时的图片宽度比例是相对于这个minipage的，不是全局
+\caption{物理内存布局}
+\label{fig:phy-layout2}
+\end{minipage}
+\begin{minipage}[b]{0.45\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+\centering %图片局部居中
+\includegraphics[width=0.8\textwidth]{virt-layout.png}%此时的图片宽度比例是相对于这个minipage的，不是全局
+\caption{进程虚拟空间布局}
+\label{fig:virt-layout2}
+\end{minipage}
 \end{figure}
 
-starry-next 启动了 paging 特性，为每个应用程序分配一个独立的的虚拟地址空间，即 AddrSpace 结构体，用于管理用户程序的内存空间。如图\ref{fig:virt-layout}所示，进程地址空间分为用户空间和内核空间两部分，用户空间位于低地址，包括了代码段、数据段、堆、栈、内存映射区域。
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth, keepaspectratio]{phy-layout.png}
+%     \caption{物理内存布局}
+%     \label{fig:phy-layout}
+% \end{figure}
+
+starry-next 启动了 paging 特性，为每个应用程序分配一个独立的的虚拟地址空间，即 AddrSpace 结构体，用于管理用户程序的内存空间。如图\ref{fig:virt-layout2}所示，进程地址空间分为用户空间和内核空间两部分，用户空间位于低地址，包括了代码段、数据段、堆、栈、内存映射区域。
 其中，代码段和数据段是用户程序的只读和读写数据，堆是用户程序的动态内存分配区域，栈是用户程序的函数调用和局部变量存储区域。
 内核空间位于高地址，包括了内核代码段、内核数据段、内核堆、内核栈、页表。不同架构下各部分的具体起始地址和大小会有所不同，具体设置可参照表\ref{tab:virt-layout-config}。
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth, keepaspectratio]{virt-layout.png}
-    \caption{进程虚拟空间布局}
-    \label{fig:virt-layout}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth, keepaspectratio]{virt-layout.png}
+%     \caption{进程虚拟空间布局}
+%     \label{fig:virt-layout}
+% \end{figure}
 
 \begin{table}[!ht]
     \centering
@@ -102,22 +160,20 @@ starry-next 启动了 paging 特性，为每个应用程序分配一个独立的
     \label{tab:virt-layout-config}
 \end{table}
 
+\subsection{安全内存访问}
 
-\section{starry-next 内存管理机制}
+为了保证系统的安全性和稳定性，starry-next 对用户空间内存的访问进行了严格的控制和保护，通过指针封装提供对用户空间内存的安全访问。
+具体来说，starry-next 定义了 UserPtr 和 UserConstPtr 两个安全指针类型，分别表示指向用户空间内存的可变和不可变指针。
+在访问用户空间内存时，要检查地址是否对齐、当前任务是否有权限访问该地址、地址是否在用户空间范围内并于已经分配映射。
+如果这些条件都满足，则可以安全地访问用户空间内存，否则会抛出异常并终止当前任务。
 
-starry-next 的内存管理基本上复用了 ArceOS 的内存管理机制:使用 ArceOS 提供的 AddrSpace 结构体管理用户程序的内存空间，当用户程序需要对内存进行操作时，会调用相应的系统调用，如 mmap、munmap、mprotect、mremap 等，这些系统调用会调用 AddrSpace 结构体的接口在用户地址空间中创建和管理内存映射，同时也会调用全局内存分配器进行物理页的分配和映射。
-
-但作为宏内核，starry-next 需要区分内核态和用户态，因此还对内存管理进行了进一步的优化和扩展，例如为用户态和内核态分别设置了不同的地址空间，并且用户态进程不能直接访问内核态内存空间，
-而是需要发出系统调用，通过 trap 机制进入内核态，再进行对应处理，通过这种方式来实现用户态和内核态的隔离；在一些架构中将内核部分的映射复制到用户地址空间，使用户态进程可以直接访问内核的某些数据结构或代码片段，
-可以减少内核态和用户态之间的切换开销，提高系统的性能。
-
-在页面异常的处理方面，starry-next 还增加了判断：如果是用户态程序访问内存空间或者是内核态程序访问用户内存空间时触发的缺页异常，才会调用用户程序的 handle\_page\_fault 函数，
-也就是 ArceOS 的 AddrSpace 结构体提供的页面错误处理函数处理缺页异常，该函数会根据虚拟地址的映射关系，调用全局内存分配器进行物理页的分配和映射。
-如果 AddrSpace 结构体不能成功处理该异常，则会打印错误信息并终止当前任务，并发送 SIGSEGV 信号。
+UserPtr 和 UserConstPtr 提供了一系列接口，用于对用户空间内存进行访问和修改。例如：
+负责基本信息的查询的 address（获取指针所指向的虚拟地址）和 is\_null（判断指针是否为空）和
+获取切片和引用的 get\_as\_mut 和 get\_as\_mut\_slice 等。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth, keepaspectratio]{pagefault-starry.png}
-    \caption{starry-next 页异常处理}
-    \label{fig:pagefault-starry}
+    \includegraphics[width=0.5\linewidth]{ptr.png}
+    \caption{安全内存访问流程}
+    \label{fig:ptr}
 \end{figure}

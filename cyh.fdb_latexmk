@@ -1,25 +1,25 @@
 # Fdb version 4
-["bibtex cyh"] 1747209021.91836 "cyh.aux" "cyh.bbl" "cyh" 1747209031.60773 0
+["bibtex cyh"] 1747227404.25762 "cyh.aux" "cyh.bbl" "cyh" 1747227415.54361 0
   "./ref/refs.bib" 1745795830 10070 56fa6e4083d54e75ac0a1d9591c15223 ""
   "./thuthesis-numeric.bst" 1745795829 46501 76355add456694ad46ab5897d31bf849 ""
-  "bu.aux" 1747209025 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
-  "cyh.aux" 1747209025 16740 beeee927c4a0e154f164b9dd80c9ba62 "xelatex"
+  "bu.aux" 1747227409 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "cyh.aux" 1747227409 17742 0ddf308df1ba06c31e18b2cf8d9c4a80 "xelatex"
   (generated)
   "cyh.bbl"
   "cyh.blg"
   (rewritten before read)
-["xdvipdfmx"] 1747209027.1154 "cyh.xdv" "cyh.pdf" "cyh" 1747209031.61962 0
-  "cyh.xdv" 1747209025 704884 58de4d3a76cee2b317a01b98b552448f "xelatex"
+["xdvipdfmx"] 1747227410.61253 "cyh.xdv" "cyh.pdf" "cyh" 1747227415.55916 0
+  "cyh.xdv" 1747227409 734240 6e6d85a1a0f16e533fe8494effe1d257 "xelatex"
   (generated)
   "cyh.pdf"
   (rewritten before read)
-["xelatex"] 1747209022.48949 "d:/thuthesis-v7.6.0/cyh.tex" "cyh.xdv" "cyh" 1747209031.60818 0
-  "bu.aux" 1747209025 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
-  "cyh.aux" 1747209025 16740 beeee927c4a0e154f164b9dd80c9ba62 "xelatex"
-  "cyh.bbl" 1747209022 380 df8c4f4f41d6dc077f9019104a98461e "bibtex cyh"
-  "cyh.out" 1747209025 7703 e8c3b4b061207ef680e2d962671428de "xelatex"
-  "cyh.tex" 1747148004 3185 47c16d5d71001a5c0d95198e23c36e08 ""
-  "cyh.toc" 1747209025 4187 b78ff744b45d7d5046faa322165c9547 "xelatex"
+["xelatex"] 1747227404.86305 "d:/thuthesis-v7.6.0/cyh.tex" "cyh.xdv" "cyh" 1747227415.54472 0
+  "bu.aux" 1747227409 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "cyh.aux" 1747227409 17742 0ddf308df1ba06c31e18b2cf8d9c4a80 "xelatex"
+  "cyh.bbl" 1747227404 380 df8c4f4f41d6dc077f9019104a98461e "bibtex cyh"
+  "cyh.out" 1747227409 8276 3a959925f0265b320d366f96896c85ac "xelatex"
+  "cyh.tex" 1747213025 3225 bcb945f7a9a23558442a8266ef76ab09 ""
+  "cyh.toc" 1747227409 4547 177e4a017b61282e57d0b9b225f76602 "xelatex"
   "d:/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1745798560 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1745800336 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
   "d:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1745798161 1528 abec98dbc43e172678c11b3b9031252a ""
@@ -154,7 +154,7 @@
   "d:/texlive/2025/texmf-dist/web2c/texmf.cnf" 1745797858 42148 61becc7c670cd061bb319c643c27fdd4 ""
   "d:/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1745800483 4149389 8d3c2cb9bcb7cec4d35ae7aeb5460f20 ""
   "d:/texlive/2025/texmf.cnf" 1745800357 713 e69b156964470283e0530f5060668171 ""
-  "d:/thuthesis-v7.6.0/cyh.tex" 1747148004 3185 47c16d5d71001a5c0d95198e23c36e08 ""
+  "d:/thuthesis-v7.6.0/cyh.tex" 1747213025 3225 bcb945f7a9a23558442a8266ef76ab09 ""
   "figures/ArceOS (1).pdf" 1746509203 308425 f7969c9b63cb47ab5e4c6a38c9373bc4 ""
   "figures/Buddy.png" 1747141284 18250 09bbfa0032559c924c38c971922a9598 ""
   "figures/Slab.png" 1747140714 51642 51a9cf141172bd0fdbcf1b4ec25d468c ""
@@ -167,10 +167,12 @@
   "figures/axhal-arch.png" 1747143856 59181 540f4491663f93101cb8554cc0e225f7 ""
   "figures/axmm-arch.png" 1747138944 37937 3c11eaaa186c4dff600a473776fe787f ""
   "figures/init.png" 1746766072 58065 e701707d3dac9e7792bbde52534431bb ""
+  "figures/mm-arch2.png" 1747221580 101981 456aa55f61af18344e48a0d3784e94b8 ""
   "figures/pagefault-arceos.png" 1747128925 140261 801f64f94a574ccd5e3084ac261eb718 ""
   "figures/pagefault-starry.png" 1747128793 132604 db39ff5097bdb8a1caae03752d5e508a ""
   "figures/phy-layout.png" 1747207994 37772 77da82d5e9e10226fc53cb121f3e2bf0 ""
   "figures/prlimit64.png" 1746924051 7987 e40ab07a49a660591f9e312880dbcdd2 ""
+  "figures/ptr.png" 1747227038 67232 cbd3f27a22695c0a336fd3533339190c ""
   "figures/s1-starry.png" 1746933477 21454 3835e62be04e30d98bcde068480b65a6 ""
   "figures/s1.png" 1746933505 21427 fd6f248c04f9cf6df0ca0d71484409bc ""
   "figures/s2-local.png" 1746933671 10583 c7442d09e316b8a185aefb56767ba5a3 ""
@@ -184,19 +186,19 @@
   "figures/syscall-prilimit64.png" 1747120684 186021 6be23c4c3a465071f9d4e3e7178a2868 ""
   "figures/syscall-sysinfo.png" 1747123607 48278 11b77ae6db67ab5a7fe7352b7f3352da ""
   "figures/syscall-unmap.png" 1747104225 103493 e7add6f5511d233b5d2ee4cc5d59391e ""
-  "figures/syscall2.png" 1746888872 35192 4b8b30d70481ced8ae6942ad823c89f8 ""
+  "figures/syscall.png" 1747219531 31380 429f17a44da8064f9eae7d1f79bd706b ""
   "figures/sysinfo.png" 1746923254 26261 e6206fa903d4d318296f81a9e71762dd ""
   "figures/virt-layout.png" 1747208035 160932 bb16521209ac393a670b38d8d8c48de4 ""
   "mydata/chap1.tex" 1746929556 13474 1332612ee12cef003d5252ff7b2d62c9 ""
-  "mydata/chap2.tex" 1747148004 22383 a35e5dc93b7d451c66ec2f0e60e01c74 ""
-  "mydata/chap3.tex" 1747209015 10303 adeb186080f77bacb1515d5724cf5254 ""
+  "mydata/chap2.tex" 1747222476 22414 49040896c78dc8c6a5afd246583e3ece ""
+  "mydata/chap3.tex" 1747227396 13278 f0c2b21a0e5954388d2aa429faed2ae4 ""
   "mydata/chap4.tex" 1747128473 15905 453150d3b88cc8fabc7c93b6d8ce95c2 ""
   "mydata/chap5.tex" 1747121109 10411 e697c3c377f0499a0efca5d6f31e1ad5 ""
   "mydata/chap6.tex" 1746929556 1611 d10a7466795e1f2ff135b5657757aab3 ""
   "thu-fig-logo.pdf" 1745795829 111420 cd2877e514f010da7900657650398508 ""
   "thu-text-logo.pdf" 1745795829 22013 fd632a66071a0c4609c3c3ac948665f8 ""
   "thusetup.tex" 1746909041 5534 174835f666f9bb9ab7d8a4756a429be3 ""
-  "thuthesis.cls" 1747209016 116146 7e746cf9a7f4a3a1a40ed38a7a1e0571 ""
+  "thuthesis.cls" 1747227397 116146 7e746cf9a7f4a3a1a40ed38a7a1e0571 ""
   (generated)
   "bu.aux"
   "cyh.aux"

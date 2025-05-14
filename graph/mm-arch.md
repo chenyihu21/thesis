@@ -1,0 +1,23 @@
+graph TD;
+    A[内存管理模块] --> B[系统调用] 
+B --> C[mmap]
+B --> D[munmap]
+B --> E[mprotect]
+B --> F[brk]
+A --> G[地址空间管理]
+
+A --> K[内存布局]
+A --> L[页面错误处理]
+G --> M[AddrSpace]
+L --> handle_page_fault
+M --> O[map_alloc]
+M --> P[ummap]
+M --> Q[find_free_area]
+M --> R[protect]
+K --> I[User]
+K --> J[Kernel]
+I --> S[基址]
+I --> T[堆]
+I --> U[栈]
+I --> V[解释器]
+I --> W[内存映射区域]
