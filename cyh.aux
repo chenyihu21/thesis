@@ -65,87 +65,93 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces 系统调用流程}}{22}{figure.caption.20}\protected@file@percent }
 \newlabel{fig:syscall}{{3.2}{22}{系统调用流程}{figure.caption.20}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}内存布局}{22}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}starry-next 内存管理机制}{22}{section.3.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces starry-next 页异常处理}}{24}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:pagefault-starry}{{3.3}{24}{starry-next 页异常处理}{figure.caption.21}{}}
-\pp@pagectr{footnote}{4}{31}{25}
-\@writefile{toc}{\contentsline {chapter}{\numberline {第4章}内存管理模块接口的设计与实现}{25}{chapter.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}内存管理模块直接相关的系统调用}{25}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}mmap 系统调用}{25}{subsection.4.1.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}{\ignorespaces mmap}}{25}{lstlisting.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces mmap 系统调用流程}}{26}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:mmap}{{4.1}{26}{mmap 系统调用流程}{figure.caption.22}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}{\ignorespaces deal with NotMapped}}{27}{lstlisting.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}munmap 系统调用}{27}{subsection.4.1.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}{\ignorespaces munmap}}{27}{lstlisting.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces munmap 系统调用流程}}{28}{figure.caption.23}\protected@file@percent }
-\newlabel{fig:munmap}{{4.2}{28}{munmap 系统调用流程}{figure.caption.23}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces munmap 处理交叉区域}}{29}{figure.caption.24}\protected@file@percent }
-\newlabel{fig:munmap2}{{4.3}{29}{munmap 处理交叉区域}{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}brk 系统调用}{29}{subsection.4.1.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.4}{\ignorespaces brk}}{29}{lstlisting.4.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces brk 系统调用流程}}{30}{figure.caption.25}\protected@file@percent }
-\newlabel{fig:brk}{{4.4}{30}{brk 系统调用流程}{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}mprotect 系统调用}{31}{subsection.4.1.4}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.5}{\ignorespaces mprotect}}{31}{lstlisting.4.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces mprotect 系统调用流程}}{31}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:mprotect}{{4.5}{31}{mprotect 系统调用流程}{figure.caption.26}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}内存管理模块间接相关的系统调用}{32}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}sysinfo 系统调用}{32}{subsection.4.2.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.6}{\ignorespaces sysinfo}}{32}{lstlisting.4.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces sysinfo 系统调用流程}}{32}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:sysinfo-call}{{4.6}{32}{sysinfo 系统调用流程}{figure.caption.27}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}arch\_prctl 系统调用}{32}{subsection.4.2.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.7}{\ignorespaces arch\_prctl}}{32}{lstlisting.4.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces arch\_prctl 系统调用流程}}{33}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:arch-prctl}{{4.7}{33}{arch\_prctl 系统调用流程}{figure.caption.28}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}prlimit64 系统调用}{33}{subsection.4.2.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.8}{\ignorespaces prlimit64}}{33}{lstlisting.4.8}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces prlimit64 系统调用流程}}{34}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:prlimit64}{{4.8}{34}{prlimit64 系统调用流程}{figure.caption.29}{}}
-\pp@pagectr{footnote}{5}{41}{35}
-\@writefile{toc}{\contentsline {chapter}{\numberline {第5章}实验环境与测试方法}{35}{chapter.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}实验环境}{35}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}功能测试}{35}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}测试用例}{35}{subsection.5.2.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}{\ignorespaces prlimit64}}{35}{lstlisting.5.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}{\ignorespaces sysinfo}}{36}{lstlisting.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}测试结果与分析}{36}{subsection.5.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.1}mmap 和 munmap 系统调用}{36}{subsubsection.5.2.2.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}{\ignorespaces fdopen 测试结果}}{36}{lstlisting.5.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}{\ignorespaces 自定义 mmap 测试用例}}{37}{lstlisting.5.4}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.5}{\ignorespaces 自定义 mmap 测试用例结果}}{37}{lstlisting.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.2}brk 系统调用}{37}{subsubsection.5.2.2.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.6}{\ignorespaces brk}}{37}{lstlisting.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.3}sysinfo 和 prlimit64 系统调用}{38}{subsubsection.5.2.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces sysinfo 和 prlimit64 测试结果}}{38}{figure.caption.30}\protected@file@percent }
-\newlabel{fig:sysinfo-test}{{5.1}{38}{sysinfo 和 prlimit64 测试结果}{figure.caption.30}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces rlimit\_open\_files 测例结果}}{38}{figure.caption.31}\protected@file@percent }
-\newlabel{fig:prlimit64-test}{{5.2}{38}{rlimit\_open\_files 测例结果}{figure.caption.31}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}性能测试}{38}{section.5.3}\protected@file@percent }
-\newlabel{fig:sub.1}{{5.3(a)}{38}{Linux}{figure.caption.32}{}}
-\newlabel{sub@fig:sub.1}{{(a)}{38}{Linux}{figure.caption.32}{}}
-\newlabel{fig:sub.2}{{5.3(b)}{38}{starry-next}{figure.caption.32}{}}
-\newlabel{sub@fig:sub.2}{{(b)}{38}{starry-next}{figure.caption.32}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces 自定义 mmap 测试用例的运行时间对比}}{38}{figure.caption.32}\protected@file@percent }
-\newlabel{Fig.main}{{5.3}{38}{自定义 mmap 测试用例的运行时间对比}{figure.caption.32}{}}
-\newlabel{fig:sub.3}{{5.4(a)}{39}{Linux}{figure.caption.33}{}}
-\newlabel{sub@fig:sub.3}{{(a)}{39}{Linux}{figure.caption.33}{}}
-\newlabel{fig:sub.4}{{5.4(b)}{39}{starry-next}{figure.caption.33}{}}
-\newlabel{sub@fig:sub.4}{{(b)}{39}{starry-next}{figure.caption.33}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces 重复进行系统调用的运行时间对比}}{39}{figure.caption.33}\protected@file@percent }
-\newlabel{Fig.main2}{{5.4}{39}{重复进行系统调用的运行时间对比}{figure.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces 物理内存布局}}{23}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:phy-layout}{{3.3}{23}{物理内存布局}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces 进程虚拟空间布局}}{23}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:virt-layout}{{3.4}{23}{进程虚拟空间布局}{figure.caption.22}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces 各架构虚拟空间设置}}{24}{table.caption.23}\protected@file@percent }
+\newlabel{tab:virt-layout-config}{{3.1}{24}{各架构虚拟空间设置}{table.caption.23}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}starry-next 内存管理机制}{24}{section.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces starry-next 页异常处理}}{25}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:pagefault-starry}{{3.5}{25}{starry-next 页异常处理}{figure.caption.24}{}}
+\pp@pagectr{footnote}{4}{32}{26}
+\@writefile{toc}{\contentsline {chapter}{\numberline {第4章}内存管理模块接口的设计与实现}{26}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}内存管理模块直接相关的系统调用}{26}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}mmap 系统调用}{26}{subsection.4.1.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}{\ignorespaces mmap}}{26}{lstlisting.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces mmap 系统调用流程}}{27}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:mmap}{{4.1}{27}{mmap 系统调用流程}{figure.caption.25}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}{\ignorespaces deal with NotMapped}}{28}{lstlisting.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}munmap 系统调用}{28}{subsection.4.1.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}{\ignorespaces munmap}}{28}{lstlisting.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces munmap 系统调用流程}}{29}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:munmap}{{4.2}{29}{munmap 系统调用流程}{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces munmap 处理交叉区域}}{30}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:munmap2}{{4.3}{30}{munmap 处理交叉区域}{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}brk 系统调用}{30}{subsection.4.1.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.4}{\ignorespaces brk}}{30}{lstlisting.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces brk 系统调用流程}}{31}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:brk}{{4.4}{31}{brk 系统调用流程}{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}mprotect 系统调用}{32}{subsection.4.1.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.5}{\ignorespaces mprotect}}{32}{lstlisting.4.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces mprotect 系统调用流程}}{32}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:mprotect}{{4.5}{32}{mprotect 系统调用流程}{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}内存管理模块间接相关的系统调用}{33}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}sysinfo 系统调用}{33}{subsection.4.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.6}{\ignorespaces sysinfo}}{33}{lstlisting.4.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces sysinfo 系统调用流程}}{33}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:sysinfo-call}{{4.6}{33}{sysinfo 系统调用流程}{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}arch\_prctl 系统调用}{33}{subsection.4.2.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.7}{\ignorespaces arch\_prctl}}{33}{lstlisting.4.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces arch\_prctl 系统调用流程}}{34}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:arch-prctl}{{4.7}{34}{arch\_prctl 系统调用流程}{figure.caption.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}prlimit64 系统调用}{34}{subsection.4.2.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.8}{\ignorespaces prlimit64}}{34}{lstlisting.4.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces prlimit64 系统调用流程}}{35}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:prlimit64}{{4.8}{35}{prlimit64 系统调用流程}{figure.caption.32}{}}
+\pp@pagectr{footnote}{5}{42}{36}
+\@writefile{toc}{\contentsline {chapter}{\numberline {第5章}实验环境与测试方法}{36}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}实验环境}{36}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}功能测试}{36}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}测试用例}{36}{subsection.5.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}{\ignorespaces prlimit64}}{36}{lstlisting.5.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}{\ignorespaces sysinfo}}{37}{lstlisting.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}测试结果与分析}{37}{subsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.1}mmap 和 munmap 系统调用}{37}{subsubsection.5.2.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}{\ignorespaces fdopen 测试结果}}{37}{lstlisting.5.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}{\ignorespaces 自定义 mmap 测试用例}}{38}{lstlisting.5.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.5}{\ignorespaces 自定义 mmap 测试用例结果}}{38}{lstlisting.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.2}brk 系统调用}{38}{subsubsection.5.2.2.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.6}{\ignorespaces brk}}{38}{lstlisting.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2.3}sysinfo 和 prlimit64 系统调用}{39}{subsubsection.5.2.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces sysinfo 和 prlimit64 测试结果}}{39}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:sysinfo-test}{{5.1}{39}{sysinfo 和 prlimit64 测试结果}{figure.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces rlimit\_open\_files 测例结果}}{39}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:prlimit64-test}{{5.2}{39}{rlimit\_open\_files 测例结果}{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}性能测试}{39}{section.5.3}\protected@file@percent }
+\newlabel{fig:sub.1}{{5.3(a)}{39}{Linux}{figure.caption.35}{}}
+\newlabel{sub@fig:sub.1}{{(a)}{39}{Linux}{figure.caption.35}{}}
+\newlabel{fig:sub.2}{{5.3(b)}{39}{starry-next}{figure.caption.35}{}}
+\newlabel{sub@fig:sub.2}{{(b)}{39}{starry-next}{figure.caption.35}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces 自定义 mmap 测试用例的运行时间对比}}{39}{figure.caption.35}\protected@file@percent }
+\newlabel{Fig.main}{{5.3}{39}{自定义 mmap 测试用例的运行时间对比}{figure.caption.35}{}}
+\newlabel{fig:sub.3}{{5.4(a)}{40}{Linux}{figure.caption.36}{}}
+\newlabel{sub@fig:sub.3}{{(a)}{40}{Linux}{figure.caption.36}{}}
+\newlabel{fig:sub.4}{{5.4(b)}{40}{starry-next}{figure.caption.36}{}}
+\newlabel{sub@fig:sub.4}{{(b)}{40}{starry-next}{figure.caption.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces 重复进行系统调用的运行时间对比}}{40}{figure.caption.36}\protected@file@percent }
+\newlabel{Fig.main2}{{5.4}{40}{重复进行系统调用的运行时间对比}{figure.caption.36}{}}
 \@input{bu.aux}
 \bibdata{ref/refs}
 \gdef\bu@bibdata{ref/refs}
-\pp@pagectr{footnote}{6}{46}{40}
-\@writefile{toc}{\contentsline {chapter}{\numberline {第6章}结论与展望}{40}{chapter.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}结论}{40}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}展望}{40}{section.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{参考文献}{41}{section*.34}\protected@file@percent }
+\pp@pagectr{footnote}{6}{47}{41}
+\@writefile{toc}{\contentsline {chapter}{\numberline {第6章}结论与展望}{41}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}结论}{41}{section.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}展望}{41}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{参考文献}{42}{section*.37}\protected@file@percent }
 \ttl@writefile{toc}{\setcounter {tocdepth}{0}}
 \@writefile{lof}{\let\contentsline\ttl@gobblecontents}
 \@writefile{lot}{\let\contentsline\ttl@gobblecontents}
 \@writefile{loe}{\let\contentsline\ttl@gobblecontents}
 \ttl@finishall
-\gdef \@abspage@last{47}
+\gdef \@abspage@last{48}

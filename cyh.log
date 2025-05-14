@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.28)  13 MAY 2025 22:53
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.28)  14 MAY 2025 15:50
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1359,58 +1359,83 @@ File: figures/starry-arch.png Graphic file (type bmp)
 [21]
 File: figures/syscall2.png Graphic file (type bmp)
 <figures/syscall2.png>
+File: figures/phy-layout.png Graphic file (type bmp)
+<figures/phy-layout.png>
 
 
 [22]
+File: figures/virt-layout.png Graphic file (type bmp)
+<figures/virt-layout.png>
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 11.04242pt on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 7.72966pt on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 5.5212pt on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 11.04005pt on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 7.728pt on input line 89.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 5.52002pt on input line 89.
+
+Overfull \hbox (34.44052pt too wide) in paragraph at lines 89--101
+ [][] 
+ []
+
+
+
+[23]
 File: figures/pagefault-starry.png Graphic file (type bmp)
 <figures/pagefault-starry.png>
 ) (./mydata/chap4.tex
 
-[23]
-
 [24]
+
+[25]
 第4章
 File: figures/syscall-mmap.png Graphic file (type bmp)
 <figures/syscall-mmap.png>
 
 
-[25
+[26
 
 ]
 
-[26]
-
 [27]
+
+[28]
 File: figures/syscall-unmap.png Graphic file (type bmp)
 <figures/syscall-unmap.png>
 
 
-[28]
+[29]
 File: figures/syscall-munmap2.png Graphic file (type bmp)
 <figures/syscall-munmap2.png>
 
 
-[29]
+[30]
 File: figures/syscall-brk.png Graphic file (type bmp)
 <figures/syscall-brk.png>
 
 
-[30]
+[31]
 File: figures/syscall-mprotect.png Graphic file (type bmp)
 <figures/syscall-mprotect.png>
 
 
-[31]
+[32]
 File: figures/syscall-sysinfo.png Graphic file (type bmp)
 <figures/syscall-sysinfo.png>
 
 
-[32]
+[33]
 File: figures/syscall-arch-prctl.png Graphic file (type bmp)
 <figures/syscall-arch-prctl.png>
 
 
-[33]
+[34]
 Underfull \hbox (badness 1132) in paragraph at lines 197--199
 []\TU/SimSun(0)/m/n/12.045 目 前 \TU/TimesNewRoman(0)/m/n/12.045 starry-next \TU/SimSun(0)/m/n/12.045 支 持 设 置 的 资 源 限 制 包 括 \TU/TimesNewRoman(0)/m/n/12.045 RLIMIT_STACK |\TU/SimSun(0)/m/n/12.045 （栈 大 小）|  和
  []
@@ -1419,11 +1444,11 @@ File: figures/syscall-prilimit64.png Graphic file (type bmp)
 <figures/syscall-prilimit64.png>
 ) (./mydata/chap5.tex
 
-[34]
+[35]
 第5章
 
 
-[35
+[36
 
 ] (d:/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
@@ -1431,12 +1456,12 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 
-[36]
+[37]
 File: figures/sysinfo.png Graphic file (type bmp)
 <figures/sysinfo.png>
 
 
-[37]
+[38]
 File: figures/prlimit64.png Graphic file (type bmp)
 <figures/prlimit64.png>
 File: figures/s2-local.png Graphic file (type bmp)
@@ -1449,16 +1474,16 @@ File: figures/s1-starry.png Graphic file (type bmp)
 <figures/s1-starry.png>
 
 
-[38]) (./mydata/chap6.tex
+[39]) (./mydata/chap6.tex
 
-[39]
+[40]
 第6章
 )
 \openout3 = `bu.aux'.
 
  (./cyh.bbl
 
-[40
+[41
 
 ]
 
@@ -1466,7 +1491,7 @@ Package natbib Warning: Empty `thebibliography' environment on input line 14.
 
 )
 
-[41
+[42
 
 
 ] (./bu.aux) (./cyh.aux (./bu.aux))
@@ -1475,15 +1500,15 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
  ***********
 Package rerunfilecheck Info: File `cyh.out' has not changed.
-(rerunfilecheck)             Checksum: AF59C11B3013E18754C0B4044B425116;7703.
+(rerunfilecheck)             Checksum: E8C3B4B061207EF680E2D962671428DE;7703.
  ) 
 Here is how much of TeX's memory you used:
- 33054 strings out of 475796
- 698508 string characters out of 5774033
- 1467245 words of memory out of 5000000
- 55465 multiletter control sequences out of 15000+600000
- 563416 words of font info for 137 fonts, out of 8000000 for 9000
+ 33113 strings out of 475796
+ 700557 string characters out of 5774033
+ 1467510 words of memory out of 5000000
+ 55508 multiletter control sequences out of 15000+600000
+ 565268 words of font info for 152 fonts, out of 8000000 for 9000
  37 hyphenation exceptions out of 8191
- 106i,12n,123p,1446b,4077s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 106i,11n,123p,1446b,4077s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on cyh.xdv (47 pages, 688048 bytes).
+Output written on cyh.xdv (48 pages, 704884 bytes).

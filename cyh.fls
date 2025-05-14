@@ -342,6 +342,13 @@ INPUT ./figures/starry-arch.png
 INPUT ./figures/starry-arch.png
 INPUT ./figures/syscall2.png
 INPUT ./figures/syscall2.png
+INPUT ./figures/phy-layout.png
+INPUT ./figures/phy-layout.png
+INPUT ./figures/virt-layout.png
+INPUT ./figures/virt-layout.png
+INPUT d:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
+INPUT d:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi7.tfm
+INPUT d:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi5.tfm
 INPUT ./figures/pagefault-starry.png
 INPUT ./figures/pagefault-starry.png
 INPUT ./mydata/chap4.tex
