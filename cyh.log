@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.28)  14 MAY 2025 20:56
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.28)  14 MAY 2025 21:57
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1373,32 +1373,33 @@ File: figures/phy-layout.png Graphic file (type bmp)
 <figures/phy-layout.png>
 File: figures/virt-layout.png Graphic file (type bmp)
 <figures/virt-layout.png>
-LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
-(Font)              scaled to size 11.04242pt on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
-(Font)              scaled to size 7.72966pt on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
-(Font)              scaled to size 5.5212pt on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
-(Font)              scaled to size 11.04005pt on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
-(Font)              scaled to size 7.728pt on input line 147.
-LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
-(Font)              scaled to size 5.52002pt on input line 147.
 
-Overfull \hbox (34.44052pt too wide) in paragraph at lines 147--159
+
+[24]
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 11.04242pt on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 7.72966pt on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(2)/m/n' will be
+(Font)              scaled to size 5.5212pt on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 11.04005pt on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 7.728pt on input line 165.
+LaTeX Font Info:    Font shape `TU/XITSMath-Regular(3)/m/n' will be
+(Font)              scaled to size 5.52002pt on input line 165.
+
+Overfull \hbox (34.44052pt too wide) in paragraph at lines 165--177
  [][] 
  []
 
 
 
-[24]
+[25]
 File: figures/ptr.png Graphic file (type bmp)
 <figures/ptr.png>
 ) (./mydata/chap4.tex
-
-[25]
 
 [26]
 第4章
@@ -1507,15 +1508,15 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
  ***********
 Package rerunfilecheck Info: File `cyh.out' has not changed.
-(rerunfilecheck)             Checksum: 3A959925F0265B320D366F96896C85AC;8276.
+(rerunfilecheck)             Checksum: FE150050299A7712771C0331AD0BA752;8443.
  ) 
 Here is how much of TeX's memory you used:
- 33140 strings out of 475796
- 701100 string characters out of 5774033
- 1467709 words of memory out of 5000000
- 55533 multiletter control sequences out of 15000+600000
+ 33141 strings out of 475796
+ 701113 string characters out of 5774033
+ 1467708 words of memory out of 5000000
+ 55534 multiletter control sequences out of 15000+600000
  565268 words of font info for 152 fonts, out of 8000000 for 9000
  37 hyphenation exceptions out of 8191
  106i,11n,123p,1446b,4077s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on cyh.xdv (49 pages, 734240 bytes).
+Output written on cyh.xdv (49 pages, 747996 bytes).

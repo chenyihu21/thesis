@@ -22,12 +22,13 @@
 \contentsline {chapter}{\numberline {第3章}starry-next 宏内核}{20}{chapter.3}%
 \contentsline {section}{\numberline {3.1}starry-next 宏内核整体架构}{20}{section.3.1}%
 \contentsline {section}{\numberline {3.2}starry-next 初始化和运行过程}{21}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}加载程序到内存空间}{22}{subsection.3.2.1}%
 \contentsline {section}{\numberline {3.3}starry-next 内存管理模块}{22}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}模块结构}{22}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}内存管理机制}{22}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.2}内存管理机制}{23}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}页面异常处理}{23}{subsection.3.3.3}%
 \contentsline {subsection}{\numberline {3.3.4}内存布局}{24}{subsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.3.5}安全内存访问}{24}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.5}安全内存访问}{25}{subsection.3.3.5}%
 \contentsline {chapter}{\numberline {第4章}内存管理模块接口的设计与实现}{27}{chapter.4}%
 \contentsline {section}{\numberline {4.1}内存管理模块直接相关的系统调用}{27}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}mmap 系统调用}{27}{subsection.4.1.1}%
