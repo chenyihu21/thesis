@@ -1,0 +1,63 @@
+\section{Ariel OS 及其调度器的目标}
+\label{sec:goals}
+%\label{sec:single-core}
+
+% \begin{itemize}
+%     \item Starting point:  RIOT-rs scheduler
+%     \item Objectives:
+%     \begin{itemize}
+%         \item Support symmetric multicore / SMP hardware;  AMP not supported!
+%         \item Execute \textit{n} highest priority threads on \textit{n} cores
+%         \item Portability: \begin{itemize}
+%             \item Between platforms: hardware abstraction; mainly platform independent code
+%             \item Single- vs multicore: no changes in user application needed; multicore transparently enabled on supported platforms
+%         \end{itemize}
+%     \end{itemize}
+% \end{itemize}
+% For basic hardware abstraction and async Rust programming, \OSname{} builds on top of Embassy~\cite{embassy}.
+% For basic single-core scheduling, our baseline is RIOT's scheduler~\cite{baccelli2018riot}, a simple tickless real-time scheduler which implements a preemptive priority scheduling policy that always executes the highest priority thread available.
+%  In the remainder of this paper, we call the above the \textit{baseline}.
+% \textit{Use-Case \& Assumptions ---} Our work targets typical microcontrollers, which entails $N$ cores and $n$ threads, and only shared caches, if any.  Furthermore $N$ and $n$ are small: typically $N<3$ and $n<15$. Notice major differences versus Linux, L4 or HPC use-cases, which entails much larger $N$ and $n$, more elaborate cache and fairness mechanisms.
+\textit{用例与假设——} 我们的研究聚焦于典型的微控制器，这些设备通常具备 $N$ 个核心和 $n$ 个线程，并且仅配备共享缓存（如果有的话）。此外，$N$ 和 $n$ 的数值相对较小：通常 $N < 3$ 且 $n < 15$。值得注意的是，这与 Linux、L4 或高性能计算（HPC）等场景存在显著差异，后者的 $N$ 和 $n$ 值通常更大，并且涉及更复杂的缓存和公平性机制。
+%Furthermore, our work targets Symmetric Multiprocessing (SMP) systems where the cores are identical in their architecture and share the entire address space. This allows a design where all threads can be executed on any available core.
+%Asymmetric Multiprocessing (AMP) systems with heterogeneous cores that differ in architecture, clock speed, or capabilities are not supported inside the scheduler.
+%Note that \OSname{} can support Asymmetric Multiprocessing (AMP) through a multi-kernel approach~\cite{multikernel}, whereby each core executes a separate instance of \OSname.
+
+
+%\textbf{Assumptions --} \noteEB{Basically: very different from what Linux, or L4 targets and HPC (TODO). Small thread count, small number of cores, no cash optimization, no fairness etc.}. 
+
+%An optimal and fair priority assignment where each thread meets its deadline is the responsibility of the user application and thus out of scope for this paper.
+
+%\OSname{} conceptually inherits the scheduler from the RIOT [CITE] operating system.
+% In this paper, we aim to %extend the baseline in order to provide multicore support, targeting 
+% support multicore, for Symmetric Multiprocessing (SMP) cases, which is the most common on microcontrollers so far, whereby the multiple cores are identical in their architecture and share the entire address space. %. We pursue 
+在本文中，我们的目标是支持多核，特别是对称多处理（SMP）场景，这在微控制器上是最常见的。在这种情况下，多个核心在架构上是相同的，并且共享整个地址空间
+% We pursue the following objectives:
+% \begin{itemize}
+%     \item \textbf{Work-Conservation ---} %Make full use of the global processing capacity across all available cores, i.e. 
+%     the scheduler must execute the \textit{n} highest priority threads on the \textit{N} available cores;
+%     \item \textbf{Real-Time ---} Retain the real-time properties of the scheduler, based on thread priorities set by the user;
+%     \item \textbf{Portability ---} Ensure portability between heterogeneous architectures and platforms.
+%     \item \textbf{Transparency ---} Transitioning from single-core to multicore use must be transparent, retain scheduler performance, and not increase complexity for the user.
+% %    \item \textbf{Small thread count, small number of cores -- ASSUMPTIONS TODO. BASICALLY DIFFERENT FROM LINUX.}     
+%     % \item \textbf{Same Single-Core Performance ---} Multicore scheduling is inherently more complex than single-core scheduling. However, on systems without multicore capabilities, the performance of the scheduler must not suffer.
+% \end{itemize}
+我们致力于实现以下目标：
+\begin{itemize}
+    \item \textbf{持续工作 ——} 调度器必须在 \textit{N} 个可用核心上执行优先级最高的 \textit{n} 个线程；
+    \item \textbf{实时性 ——} 保留基于用户设置的线程优先级的调度器的实时特性；
+    \item \textbf{可移植性 ——} 确保在不同架构和平台之间的可移植性；
+    \item \textbf{透明性 ——} 从单核到多核的切换必须是透明的，同时保持调度器的性能，并且不会给用户带来额外的复杂性。
+\end{itemize}
+%To achieve these objectives, we take full advantage of the Rust specificity beyond memory safety, for instance the crate system \cite{rust-book_crates} for importing other Rust libraries, and trait zero-cost abstractions \cite{rust-book_traits}.
+
+% \textit{Single-core Scheduler Basis ---} In the following, we build upon a single-core scheduler basis similar to RIOT~\cite{baccelli2018riot}. That is: a tickless real-time scheduler with a preemptive priority scheduling policy. 
+% The maximum number of threads is set at compile time, and all scheduler data structures are allocated statically.
+% Context switching is done lazily, in that a context is only switched when the head of the runqueue changed since the last scheduler invocation.
+% The scheduler is futher optimized to avoid superfluous scheduler interrupts.
+% Specifically, \OSname{} checks whether a new thread is ready and has higher priority than the current one \emph{before} setting a scheduler interrupt.
+
+% \textit{Operating System ---} Beyond scheduling, \OSname{} aims to be a one-stop-shop for distributed computing and networked applications on heterogeneous 32-bit MCUs. More details on this bigger picture are given in Section~\ref{sec:user-guide}. 
+\textit{操作系统——} 除了调度功能外，\OSname{} 还致力于成为异构 32 位微控制器上分布式计算和网络应用的一站式解决方案。更多关于这一愿景的细节将在第~\ref{sec:user-guide} 节中介绍。
+%We now dive into the guts of multicore scheduling in Section~\ref{sec:design-overview}.
+

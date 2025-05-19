@@ -1,0 +1,42 @@
+% !TeX root = ../cyh.tex
+
+% 中英文摘要和关键字
+
+\begin{abstract}
+  内核是作为操作系统的核心组件，负责管理计算机系统的处理器、内存、文件系统等资源，
+  其设计和实现对于操作系统的性能和稳定性至关重要。而模块化或者说组件化的内核设计则可以
+  提高内核的可维护性和扩展性，同时也可以减少内核的复杂性和风险。
+
+  内存管理模块是模块化内核设计中最基本的模块之一，其主要任务是管理计算机系统的内存资源，
+  提供内存分配、释放和映射等功能。
+  本文基于 ArceOs 基座和已有架构，对 starry-next 的内存管理模块进行详细地分析和设计，
+  包括 ArceOs 内存管理相关的组件和模块、starry-next 内存管理模块的结构和内存管理机制，
+  以及 mmap、munmap、mprotect、brk 等系统调用的实现与测试，验证了当前内存管理模块设计的
+  正确性和稳定性，一定程度上明确了内存管理模块的功能与边界。
+  
+  同时，本文与该课题下其他模块共同开发宏内核的过程，也体现了内核的模块化设计
+  在减少相互依赖、降低系统复杂度等方面的重要作用，为进一步的内核设计和优化提供了重要的参考和借鉴。
+
+  % 关键词用“英文逗号”分隔，输出时会自动处理为正确的分隔符
+  \thusetup{
+    keywords = {操作系统, 内核, 内存管理, 模块化, 系统调用},
+  }
+\end{abstract}
+
+\begin{abstract*}
+  The kernel serves as the core component of an operating system, 
+  tasked with managing the processor, memory, file system, 
+  and other critical resources of a computer system. 
+  Its design and implementation are pivotal to the overall performance and stability of the operating system. 
+  Adopting a modular or component-based approach to kernel design can significantly enhance its maintainability and extensibility, 
+  while simultaneously mitigating complexity and associated risks.
+
+  The memory management module constitutes one of the fundamental components within a modular kernel architecture. It is primarily responsible for overseeing the memory resources of a computer system, offering essential functionalities such as memory allocation, deallocation, and mapping. This paper presents an in-depth analysis and design of the memory management module for starry-next, based on the ArceOS framework and existing architecture. This encompasses an examination of the components and modules related to memory management in ArceOS, an exploration of the structure and mechanisms of the memory management module in starry-next, and the implementation and testing of key system calls, including mmap, munmap, mprotect, and brk. These efforts have validated the correctness and stability of the current memory management module design, 
+  thereby contributing to a better understanding of its functions and boundaries.
+
+  Furthermore, the collaborative development of the macrokernel within this project, alongside other modules, underscores the crucial role of modular kernel design in reducing interdependencies and diminishing system complexity. This experience provides valuable insights and serves as a significant reference for future kernel design and optimization endeavors.
+  % Use comma as separator when inputting
+  \thusetup{
+    keywords* = {operating system, kernel, memory management, modular, system call},
+  }
+\end{abstract*}

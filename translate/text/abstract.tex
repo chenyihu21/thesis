@@ -1,0 +1,21 @@
+% Large swaths of low-level system software building blocks originally implemented in C/C++ are currently being swapped for equivalent rewrites in Rust, a relatively more secure and dependable programming language. 
+% %Such re-implementations are primarily motivated by the comparatively increased dependability provided by software modules written in Rust.
+% %The C to Rust migration concerns not only software running on microprocessors, but also software embedded on microcontrollers. Indeed, 
+% %In this context, a trend emerged whereby new operating systems targeting microcontrollers are based on embedded Rust. However, 
+% %Although networked sensors increasingly use new microcontrollers based on multicore 32-bit hardware architectures,
+% So far, however, no embedded OS in Rust 
+% %available embedded Rust operating systems 
+% supports multicore preemptive scheduling on microcontrollers.
+% % such as found on networked sensors' hardware.
+% %However, in order to fully exploit the potential for distributed  computing in  the  Internet  of  Things (IoT), efficient multicore support is a must.
+% In this paper, we thus fill this gap with a new operating system:  \OSname{}. % supporting multicore scheduling (symmetric multiprocessing) and improves application code portability on diverse popular 32-bit microcontroller architectures.
+% We describe its design, we provide the source code of its implementation, and we perform micro-benchmarks on the main 32-bit microcontroller architectures: ARM Cortex-M, RISC-V and Espressif Xtensa. 
+% We show how our scheduler takes advantage of several cores, while incurring only small overhead on single-core hardware. 
+% %\OSname{} also integrates a curated set of libraries (various Rust crates for crypto, network stacks, and other system utilities). 
+% %These can be cherry-picked at compile time, made accessible via APIs we crafted such that they remain consistent across different hardware.
+% As such, \OSname{} provides a convenient embedded software platform for small networked devices, for both research and industry practitioners.
+% %with a view to conveniently develop over a more dependable software basis with embedded Rust on networked sensors using microcontrollers.
+% %On the one hand, researchers can more easily carry out experiments exploiting the features of a larger matrix of recent (and less recent) microcontroller hardware.
+% %On the other hand, by using \OSname{}, a company could accelerate a transition from C towards embedded Rust software, while maintaining a high level of agility in terms of reusing software (e.g. their business logic) on a wide variety of microcontroller architectures and boards available commercially off-the shelf.
+
+大量原本用C/C++实现的低级系统软件组件，目前正在被用Rust语言重新编写。Rust是一种相对更安全、更可靠的编程语言。然而，到目前为止，还没有用Rust编写的嵌入式操作系统支持微控制器上的多核抢占式调度。因此，本文填补了这一空白，提出了一个新的操作系统：Ariel OS。我们描述了它的设计，提供了其实现的源代码，并在主流的32位微控制器架构上进行了微基准测试，包括ARM Cortex-M、RISC-V和Espressif Xtensa。我们展示了我们的调度器如何在利用多核优势的同时，仅在单核硬件上产生极小的额外开销。正因如此，Ariel OS 为研究和行业从业者针对小型联网设备提供了一个便捷的嵌入式软件平台。

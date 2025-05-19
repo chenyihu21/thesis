@@ -68,6 +68,20 @@ axhal 组件提供了一层针对不同硬件平台的硬件封装，它为指�
   \label{fig:axhal-arch}
 \end{figure}
 
+在 Rust 的 page\_table\_multiarch包的支持下，不同架构的地址和页表有不同的结构和布局，例如 x86\_64 架构采用 4 级页表，支持 48 位虚拟地址和 56 位物理地址；
+AArch64 架构采用 4 级页表，支持 48 位虚拟地址和 48 位物理地址；LoongArch64 架构采用 4 级页表，支持 48 位虚拟地址和 48 位物理地址\cite{1024579329.nh}；
+RISC-V64 架构则使用 Sv39 结构，采用 3 级页表，支持 39 位虚拟地址和 56 位物理地址。这里以 Sv39 结构为例，介绍其页表的结构和布局，以及虚拟地址和物理地址的转换。
+
+如图\ref{fig:sv39}所示，在 Sv39 标准下，虚拟地址由 39 位组成，其中前 27 位为页目录索引，每 9 位对应一级页表，最后 12 位为页内偏移。页表则为三级结构，
+每个节点都是一个 4K 的物理页，包含 512 个页表项。当虚拟地址转换为物理地址时，首先根据 satp 寄存器找到根页表（二级页表）的物理地址，然后根据 VPN2 找到对应的页表项，根据其中物理页号（PPN）可以找到一级页表的物理地址。
+接着按照同样的方法根据 VPN1 获取零级页表和 VPN0 对应的页表项，最后根据页表项中的物理页号找到对应的物理页，再加上页内偏移得到最终的物理地址\cite{1024446289.nh}。
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{sv39 copy.png}
+  \caption{Sv39 标准下虚实地址结构、页表结构和寻址过程}
+  \label{fig:sv39}
+\end{figure}
 
 
 \subsection{axalloc}
@@ -81,27 +95,27 @@ axhal 组件提供了一层针对不同硬件平台的硬件封装，它为指�
 
 如图\ref{fig:axalloc-arch}，axalloc 模块中定义了全局内存分配器 GlobalAllocator，由字节分配器和页面分配器组成。其中，字节分配器用于小内存块的分配和释放，在 ArceOS 中我们提供了三种不同的字节分配器：
 \begin{itemize}
-\item SlabByteAllocator——基于 slab 分配算法的字节分配器，其核心思想是将内存按照对象的大小进行分类，对于每一类对象，预先分配好一组连续的内存块，这些内存块组成一个 “slab”。每个 slab 包含了多个相同大小的对象槽（Object Slots），当需要分配某个特定大小的对象时，就从对应的 slab 中获取一个空闲的对象槽；当对象释放时，对应的对象槽又可以被重新利用。同时，为了更好地管理这些 slab，会有 slab 缓存（Slab Cache）机制，用于跟踪空闲和已使用的 slab 等状态。
-slab 算法对于频繁分配和释放相同类型、相同大小对象的场景表现卓越，同类型对象集中存放使得在数据访问时对 CPU 缓存的利用更为充分，并且可以有效地减少内存碎片。但固定大小的 slab 可能会导致内存浪费和对于多样化、大小不一的内存分配需求适应性较差的问题。
+\item SlabByteAllocator——基于 Slab 分配算法的字节分配器，其核心思想是将内存按照对象的大小进行分类，对于每一类对象，预先分配好一组连续的内存块，这些内存块组成一个 “slab”。每个 slab 包含了多个相同大小的对象槽（Object Slots），当需要分配某个特定大小的对象时，就从对应的 slab 中获取一个空闲的对象槽；当对象释放时，对应的对象槽又可以被重新利用。同时，为了更好地管理这些 slab，会有 slab 缓存（Slab Cache）机制，用于跟踪空闲和已使用的 slab 等状态。
+slab 算法对于频繁分配和释放相同类型、相同大小对象的场景表现卓越，同类型对象集中存放使得在数据访问时对 CPU 缓存的利用更为充分，并且可以有效地减少内存碎片。但固定大小的 slab 可能会导致内存浪费和对于多样化、大小不一的内存分配需求适应性较差的问题\cite{guo2024slabefficienttransformerssimplified}。
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\linewidth]{Slab.png}
+  \includegraphics[width=0.6\linewidth]{Slab.png}
   \caption{Slab 算法示意图}
   \label{fig:Slab}
 \end{figure}
 \item BuddyByteAllocator——基于 Buddy 算法的字节分配器，以一种二叉树的思想来管理内存，它将整个内存空间看作是一个完整的、大小为 2 的幂次方的内存块，当需要分配内存时，如果有符合要求大小（同样是 2 的幂次方）的空闲内存块，就直接分配；若没有，则将更大的空闲内存块不断地二等分（即找到它的 “buddy”，也就是相邻且同样大小的另一半内存块），直到得到合适大小的内存块进行分配。在内存释放时，会检查释放的内存块与其 buddy 是否都空闲，如果是，则将它们合并成一个更大的空闲内存块，如此不断向上合并，直到不能合并为止。
-Buddy 算法通过不断地合并空闲的 “伙伴” 内存块，能让内存空间保持相对规整，避免出现大量零散的小空闲块，内存释放时的合并操作判断和执行合并的过程也相对简单高效，但内存分配粒度受限于 2 的幂次方，可能会导致内存浪费和内部碎片问题。
+Buddy 算法通过不断地合并空闲的 “伙伴” 内存块，能让内存空间保持相对规整，避免出现大量零散的小空闲块，内存释放时的合并操作判断和执行合并的过程也相对简单高效，但内存分配粒度受限于 2 的幂次方，可能会导致内存浪费和内部碎片问题。\cite{1020112250.nh}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\linewidth,]{Buddy.png}
+  \includegraphics[width=0.6\linewidth,]{Buddy.png}
   \caption{Buddy 算法示意图}
   \label{fig:Buddy}
 \end{figure}
 \item TlsfByteAllocator——基于 TLSF（Two-Level Segregate Fit）算法的字节分配器，TLSF 采用了两级的分离适配结构。第一级是将整个内存空间按照不同大小范围划分成多个区间，每个区间对应着不同大小的内存块类别，形成一个区间链表。第二级则是针对每个区间，再使用一个位图（Bitmap）和一个空闲块链表来管理该区间内具体的空闲内存块。在进行内存分配时，先根据要分配的内存大小确定所属的区间，然后在位图中查找是否有合适的空闲块，若有则从对应的空闲块链表中取出进行分配；内存释放时，将释放的内存块重新插入到对应的空闲块链表，并相应更新位图信息。
-TLSF 算法具有高效的分配速度和高内存利用率，可以灵活应对各种不同大小内存块的分配情况，但是维护两级结构中的各种管理信息使得内存开销相对较大。
+TLSF 算法具有高效的分配速度和高内存利用率，可以灵活应对各种不同大小内存块的分配情况，但是维护两级结构中的各种管理信息使得内存开销相对较大\cite{1311009}。
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\linewidth]{TLSF.png}
+  \includegraphics[width=0.6\linewidth]{TLSF.png}
   \caption{TLSF 算法示意图}
   \label{fig:TLSF}
 \end{figure}
@@ -124,7 +138,7 @@ TLSF 算法具有高效的分配速度和高内存利用率，可以灵活应对
 \subsection{axmm}
 
 使用 axalloc 模块提供的内存管理功能，我们已经可以构建起一个简单的内存管理系统，支持内核和应用程序都处于同一地址空间，并且相互可见。
-但是，在多任务或多进程的环境下，内核和应用程序之间的内存隔离是非常重要的。为了实现这一点，ArceOS 引入了 axmm 模块来实现虚拟内存管理，其结构如图所示。
+但是，在多任务或多进程的环境下，内核和应用程序之间的内存隔离是非常重要的。为了实现这一点，ArceOS 引入了 axmm 模块来实现虚拟内存管理，其结构如图\ref{fig:axmm-arch}所示。
 
 \begin{figure}
   \centering
@@ -213,7 +227,7 @@ init_mmu = sym init_mmu,
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{init.png}
+    \includegraphics[width=0.8\linewidth]{init.png}
     \caption{分页的重建映射阶段}
     \label{fig:init}
 \end{figure}
@@ -222,9 +236,9 @@ init_mmu = sym init_mmu,
 
 同时，ArceOS 还在 AddrSpace 结构体中提供了页面异常的处理接口，例如当访问的虚拟地址对应的物理页不存在时，会触发缺页异常，此时会调用 AddrSpace 的 handle\_page\_fault 函数处理缺页异常，
 该函数会对后端为 Alloc 类型的地址，调用 axalloc 中的全局内存分配器进行物理页的分配，并通知 axhal 中的页表更新映射关系。对于后端为 Linear 类型或者需要填充的地址，则会处理失败，返回 false，
-因为这两类的地址在创建时就应完成物理页的分配和映射，缺页异常的处理不适用。AddrSpace 的 handle\_page\_fault 函数的流程图如图~\ref{fig:handle-page-fault-arceos}所示：
+因为这两类的地址在创建时就应完成物理页的分配和映射，缺页异常的处理不适用。AddrSpace 的 handle\_page\_fault 函数的流程图如图~\ref{fig:handle-page-fault-arceos}所示。
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth,height = 17cm, keepaspectratio]{pagefault-arceos.png}
     \caption{handle\_page\_fault 函数流程图}

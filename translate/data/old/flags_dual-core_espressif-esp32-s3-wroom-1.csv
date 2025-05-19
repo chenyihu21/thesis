@@ -1,0 +1,4 @@
+,thread flags -s t4
+Single Core,6030.0
+Multicore (Reallocation),4894.0
+Multicore (Dynamic),3914.0

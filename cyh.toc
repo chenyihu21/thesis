@@ -15,42 +15,76 @@
 \contentsline {section}{\numberline {2.1}ArceOS 概述}{7}{section.2.1}%
 \contentsline {section}{\numberline {2.2}ArceOS 内存管理组件及接口}{9}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}axhal}{9}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}axalloc}{10}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.2}axalloc}{11}{subsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.2.3}axmm}{14}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}axdma}{16}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}ArceOS 内存管理机制}{17}{section.2.3}%
-\contentsline {chapter}{\numberline {第3章}starry-next 宏内核}{20}{chapter.3}%
-\contentsline {section}{\numberline {3.1}starry-next 宏内核整体架构}{20}{section.3.1}%
-\contentsline {section}{\numberline {3.2}starry-next 初始化和运行过程}{21}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}加载程序到内存空间}{22}{subsection.3.2.1}%
-\contentsline {section}{\numberline {3.3}starry-next 内存管理模块}{22}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}模块结构}{22}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}内存管理机制}{23}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}页面异常处理}{23}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}内存布局}{24}{subsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.3.5}安全内存访问}{25}{subsection.3.3.5}%
-\contentsline {chapter}{\numberline {第4章}内存管理模块接口的设计与实现}{27}{chapter.4}%
-\contentsline {section}{\numberline {4.1}内存管理模块直接相关的系统调用}{27}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}mmap 系统调用}{27}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}munmap 系统调用}{29}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}brk 系统调用}{31}{subsection.4.1.3}%
-\contentsline {subsection}{\numberline {4.1.4}mprotect 系统调用}{33}{subsection.4.1.4}%
-\contentsline {section}{\numberline {4.2}内存管理模块间接相关的系统调用}{34}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}sysinfo 系统调用}{34}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}arch\_prctl 系统调用}{34}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}prlimit64 系统调用}{35}{subsection.4.2.3}%
-\contentsline {chapter}{\numberline {第5章}实验环境与测试方法}{37}{chapter.5}%
-\contentsline {section}{\numberline {5.1}实验环境}{37}{section.5.1}%
-\contentsline {section}{\numberline {5.2}功能测试}{37}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}测试用例}{37}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}测试结果与分析}{38}{subsection.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.2.1}mmap 和 munmap 系统调用}{38}{subsubsection.5.2.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2.2}brk 系统调用}{39}{subsubsection.5.2.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.2.3}sysinfo 和 prlimit64 系统调用}{40}{subsubsection.5.2.2.3}%
-\contentsline {section}{\numberline {5.3}性能测试}{40}{section.5.3}%
-\contentsline {chapter}{\numberline {第6章}结论与展望}{42}{chapter.6}%
-\contentsline {section}{\numberline {6.1}结论}{42}{section.6.1}%
-\contentsline {section}{\numberline {6.2}展望}{42}{section.6.2}%
-\contentsline {chapter}{参考文献}{43}{section*.38}%
+\contentsline {subsection}{\numberline {2.2.4}axdma}{15}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}ArceOS 内存管理机制}{18}{section.2.3}%
+\contentsline {chapter}{\numberline {第3章}starry-next 宏内核}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}starry-next 宏内核整体架构}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}starry-next 初始化和运行过程}{22}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}加载程序到内存空间}{23}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}starry-next 内存管理模块}{23}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}模块结构}{23}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}内存管理机制}{25}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}页面异常处理}{25}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}内存布局}{26}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}安全内存访问}{27}{subsection.3.3.5}%
+\contentsline {chapter}{\numberline {第4章}内存管理模块接口的设计与实现}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}内存管理模块直接相关的系统调用}{29}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}mmap 系统调用}{29}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}munmap 系统调用}{31}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}brk 系统调用}{33}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}mprotect 系统调用}{35}{subsection.4.1.4}%
+\contentsline {section}{\numberline {4.2}内存管理模块间接相关的系统调用}{36}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}sysinfo 系统调用}{36}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}arch\_prctl 系统调用}{36}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}prlimit64 系统调用}{37}{subsection.4.2.3}%
+\contentsline {chapter}{\numberline {第5章}实验环境与测试方法}{39}{chapter.5}%
+\contentsline {section}{\numberline {5.1}实验环境}{39}{section.5.1}%
+\contentsline {section}{\numberline {5.2}功能测试}{39}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}测试用例}{39}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}测试结果与分析}{40}{subsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.2.1}mmap 和 munmap 系统调用}{40}{subsubsection.5.2.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2.2}brk 系统调用}{41}{subsubsection.5.2.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.2.3}sysinfo 和 prlimit64 系统调用}{42}{subsubsection.5.2.2.3}%
+\contentsline {section}{\numberline {5.3}性能测试}{42}{section.5.3}%
+\contentsline {chapter}{\numberline {第6章}结论与展望}{44}{chapter.6}%
+\contentsline {section}{\numberline {6.1}结论}{44}{section.6.1}%
+\contentsline {section}{\numberline {6.2}展望}{44}{section.6.2}%
+\contentsline {chapter}{参考文献}{45}{section*.50}%
 \setcounter {tocdepth}{0}
+\contentsline {chapter}{\numberline {附录 A}外文资料的书面翻译}{46}{appendix.A}%
+\ttl@change@i {\@ne }{section}{\z@ }{}{\contentspush {\thecontentslabel \quad }}{}{\thu@leaders \thecontentspage }\relax 
+\ttl@change@v {section}{}{}{}\relax 
+\ttl@change@i {\@ne }{subsection}{1em}{}{\contentspush {\thecontentslabel \quad }}{}{\thu@leaders \thecontentspage }\relax 
+\ttl@change@v {subsection}{}{}{}\relax 
+\ttl@change@i {\@ne }{subsubsection}{2em}{}{\contentspush {\thecontentslabel \quad }}{}{\thu@leaders \thecontentspage }\relax 
+\ttl@change@v {subsubsection}{}{}{}\relax 
+\contentsline {section}{摘要}{46}{section*.52}%
+\contentsline {section}{\numberline {A.1}引言}{46}{section.A.1}%
+\contentsline {section}{\numberline {A.2}微控制器上的多核调度的相关研究}{47}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Ariel OS 及其调度器的目标}{48}{section.A.3}%
+\contentsline {section}{\numberline {A.4}单核调度器的基础与优化}{48}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Ariel~OS{} 多核调度器设计}{49}{section.A.5}%
+\contentsline {subsection}{\numberline {A.5.1}启动}{49}{subsection.A.5.1}%
+\contentsline {subsection}{\numberline {A.5.2}全局调度方案}{49}{subsection.A.5.2}%
+\contentsline {subsection}{\numberline {A.5.3}线程分配到核}{50}{subsection.A.5.3}%
+\contentsline {subsection}{\numberline {A.5.4}核亲和性掩码}{50}{subsection.A.5.4}%
+\contentsline {subsection}{\numberline {A.5.5}动态优先级与优先级继承}{50}{subsection.A.5.5}%
+\contentsline {subsection}{\numberline {A.5.6}调度器中的同步}{50}{subsection.A.5.6}%
+\contentsline {subsection}{\numberline {A.5.7}调度线程与异步 Rust 任务结合}{51}{subsection.A.5.7}%
+\contentsline {section}{\numberline {A.6}Ariel~OS{} 调度器实现}{51}{section.A.6}%
+\contentsline {subsection}{\numberline {A.6.1}硬件抽象}{51}{subsection.A.6.1}%
+\contentsline {subsection}{\numberline {A.6.2}特定平台的调度逻辑}{52}{subsection.A.6.2}%
+\contentsline {subsection}{\numberline {A.6.3}中断处理}{52}{subsection.A.6.3}%
+\contentsline {subsection}{\numberline {A.6.4}调度器中的同步}{52}{subsection.A.6.4}%
+\contentsline {section}{\numberline {A.7}使用 Ariel~OS{} 多核的微基准测试}{53}{section.A.7}%
+\contentsline {subsection}{\numberline {A.7.1}比较多核调度器的差异}{53}{subsection.A.7.1}%
+\contentsline {subsection}{\numberline {A.7.2}多核调度的开销}{54}{subsection.A.7.2}%
+\contentsline {subsection}{\numberline {A.7.3}计算密集型任务的加速}{54}{subsection.A.7.3}%
+\contentsline {section}{\numberline {A.8}Ariel 操作系统概述 }{55}{section.A.8}%
+\contentsline {section}{\numberline {A.9}结论}{56}{section.A.9}%
+\contentsline {section}{参考文献}{56}{section*.58}%
+\setcounter {tocdepth}{0}
+\contentsline {chapter}{致谢}{58}{section*.59}%
 \contentsfinish 

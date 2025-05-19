@@ -14,45 +14,59 @@ Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=200001) to 20 items from 10.
 Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-Database file #1: ref/refs.bib
-You've used 2 entries,
+Database file #1: myref/refs.bib
+Warning--empty author in hubris
+Warning--empty author in drone-os
+Warning--empty author in rtic
+Warning--empty author in embassy
+Warning--empty author in threadx
+Warning--empty author in freertos
+Warning--empty author in zephyr
+Warning--empty author in nuttx
+Warning--empty booktitle in EDF-RM-multiprocessor-survey
+Warning--empty author in ariel-benchmarks
+Warning--empty author in ariel-os-repo
+Warning--empty author in smoltcp
+Warning--empty author in laze
+You've used 23 entries,
             5428 wiz_defined-function locations,
-            1062 strings with 8104 characters,
-and the built_in function-call counts, 7198 in all, are:
-= -- 179
-> -- 729
-< -- 972
-+ -- 295
-- -- 41
-* -- 64
-:= -- 1073
-add.period$ -- 7
-call.type$ -- 2
-change.case$ -- 3
-chr.to.int$ -- 261
-cite$ -- 2
-duplicate$ -- 41
-empty$ -- 129
-format.name$ -- 38
-if$ -- 1877
+            1139 strings with 10077 characters,
+and the built_in function-call counts, 76845 in all, are:
+= -- 1835
+> -- 8238
+< -- 10070
++ -- 2775
+- -- 577
+* -- 604
+:= -- 10272
+add.period$ -- 71
+call.type$ -- 23
+change.case$ -- 132
+chr.to.int$ -- 2503
+cite$ -- 48
+duplicate$ -- 523
+empty$ -- 1701
+format.name$ -- 224
+if$ -- 20969
 int.to.chr$ -- 1
-int.to.str$ -- 3
+int.to.str$ -- 24
 missing$ -- 0
-newline$ -- 26
-num.names$ -- 7
-pop$ -- 316
+newline$ -- 134
+num.names$ -- 33
+pop$ -- 4156
 preamble$ -- 1
-purify$ -- 2
+purify$ -- 27
 quote$ -- 0
-skip$ -- 697
+skip$ -- 7753
 stack$ -- 0
-substring$ -- 310
-swap$ -- 2
-text.length$ -- 26
+substring$ -- 3124
+swap$ -- 24
+text.length$ -- 245
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 22
-warning$ -- 0
-while$ -- 31
+type$ -- 253
+warning$ -- 13
+while$ -- 214
 width$ -- 0
-write$ -- 41
+write$ -- 278
+(There were 13 warnings)

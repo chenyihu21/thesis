@@ -1,0 +1,27 @@
+\section{单核调度器的基础与优化}
+\label{sec:single-core}
+
+\iffalse
+
+\noteEF{Proposal: Summarize whole section in a single paragraph that just describes the optimized single-core scheduler, remove reference to RIOT-rs as "prior" work \& benchmarks}
+\noteEB{Good idea. Let's do that.}
+% - RIOT(-C) scheduler as blueprint (briefly describe main characteristics and claim this is a well-known "archetype", reasonable to start with)
+% - \OSname{} single-core RIIR version of the above
+% - briefly mention \OSname{} single-core optimizations (avoiding unecessary scheduler invocations)
+% \noteEB{shall we link here to some ancient RIOT-rs snapshot/commit/file, to be precise?}
+
+
+\fi
+
+% The \OSname{} builds upon a single-core scheduler basis similar to RIOT~\cite{baccelli2018riot}.
+% That is: a tickless real-time scheduler with a preemptive priority scheduling policy. 
+% The maximum number of threads is set at compile time, and all scheduler data structures are allocated statically.
+% Context switching is done lazily, in that a context is only switched when the head of the runqueue has changed since the last scheduler invocation.
+% The scheduler is further optimized to avoid superfluous scheduler interrupts.
+% Specifically, \OSname{} checks whether a new thread is ready and has higher priority than the current one \emph{before} setting a scheduler interrupt.
+\OSname{} 以类似于 RIOT~\cite{baccelli2018riot} 的单核调度器为基础构建。具体而言，它采用无时钟的实时调度机制，结合抢占式优先级调度策略。线程的最大数量在编译时确定，所有调度器数据结构均采用静态分配。上下文切换采用惰性执行方式，即仅当运行队列的头部自上次调度器调用以来发生变化时，才会触发上下文切换。此外，调度器还进行了优化，以避免不必要的中断。具体而言，\OSname{} 在设置调度器中断之前，会检查是否有优先级更高的线程就绪。
+
+% This optimized single-core scheduler of \OSname{} is the what we call the \textit{baseline} for the remainder of this paper, in our quest for multicore scheduling support.
+% \noteEB{We need to streamline what we call baseline. It cannot change from one section to the next...}
+% What optimizations did we do on single core, that is now the baseline?
+% Benchmark Data/ Table to measure performance improvement 

@@ -1,0 +1,84 @@
+
+\section{引言}
+
+我们对网络物理系统（cyberphysical systems）和分布式计算系统的依赖程度日益加深。这些系统所涵盖的硬件不仅包括微处理器领域的机器，还涵盖了更多资源受限的设备，例如基于微控制器单元（MCU）的传感器。根据 RFC7228~\cite{rfc7228} 的描述，这些设备实现了超低功耗和超低价格，但与微处理器相比，它们的内存容量要小得多（仅在\emph{千字节}范围内），处理能力也弱得多（CPU 时钟速度在\emph{兆赫兹}范围内）。
+
+\textbf{众多的多核微控制器——} 为了在设备保持可用以进行传感、驱动或通过网络进行数据推送/拉取的同时，执行计算密集型任务（例如实时音频处理或边缘机器学习，%（例如 TinyML 或后量子密码学）
+），必须高效利用多核。这些任务需要在设备板上执行。因此，许多厂商的旗舰产品如今都基于多核 32 位架构。例如，%Nordic nRF53 微控制器基于双核 ARM Cortex-M33，被用于流行的 Thingy53 开发板；
+Espressif ESP32\nobreakdash-S3 微控制器基于双核 Xtensa LX7；RP2350 微控制器基于双核 RISC-V Hazard3 和双核 ARM Cortex\nobreakdash-M33，被用于流行的 Raspberry Pi Pico 2 开发板。早期型号 RP2040 基于双核 ARM Cortex\nobreakdash-M0+，已经售出数百万个单位。
+其他厂商（如 Nordic、NXP、ST 等）也推出了 32 位多核微控制器。
+
+
+
+\textbf{微控制器的嵌入式操作系统——} 随着在微控制器（MCU）和传感器上运行的软件日益复杂，操作系统（OS）的使用变得愈发普遍。目前，最知名的操作系统大多采用C语言编写，例如 RIOT、Zephyr 和 FreeRTOS~\cite{hahm2015operating}。近年来，随着 Rust 语言的兴起，一种新型的操作系统和嵌入式软件平台应运而生，它们以 Rust 语言为核心进行开发。
+
+% This effort was pioneered by Tock~OScite{levy2015ownership} and many \emph{bare-metal} embedded Rust programming efforts, which resulted in vastly improved embedded Rustcite{embedded-rust-book}. 
+这一领域的先驱工作由 Tock~OS\cite{levy2015ownership} 和众多 \emph{裸机} 嵌入式 Rust 编程项目引领，这些工作极大地提升了嵌入式 Rust 的性能和可靠性~\cite{embedded-rust-book}。
+%Beyond Tock~OS, e
+% Examples of embedded Rust platforms for MCUs
+% include Hubris~\cite{hubris}, Drone~OS~\cite{drone-os}, RTIC~\cite{rtic}, as well as  asynchronous Rust with Embassy~\cite{embassy}. %Another example is RIOT-rs~\cite{riot-rs}, a rewrite of RIOT in Rust). \noteEF{Should we still mention RIOT-rs?}
+% However, to date, none of these support multicore scheduling on the main 32-bit microcontrollers.
+适用于微控制器的嵌入式 Rust 平台示例包括 Hubris~\cite{hubris}、Drone~OS~\cite{drone-os}、RTIC~\cite{rtic}，以及支持异步编程的 Embassy~\cite{embassy}。%另一个例子是 RIOT-rs~\cite{riot-rs}，即用 Rust 重写的 RIOT。 \noteEF{我们是否仍需提及 RIOT-rs？}
+然而，迄今为止，这些平台中尚无一个支持在主流 32 位微控制器上进行多核调度。
+%This is a small part of a larger movement knownw as \textit{RIIR} (Rewrite It In Rust), which is driven by calls~\cite{potus} for a fundamental shift towards using a more secure and dependable basis than C/C++ building blocks. It thus looks like Rust might fuel the future more than C/C++.
+\iffalse
+The so-called ownership model in Rust can conflict with common resource-sharing practices used in embedded systems to fit smaller memory budgets, thus requiring new workarounds to maintain memory safety guarantees~\cite{levy2015ownership}. Despite such challenges Rust is attractive for developing less vulnerable embedded software, because of its memory safety features (as well as more convenient abstraction and more modern tooling, compared to C).
+\fi
+
+
+
+
+
+% The Raspberry Pi Pico} is the first microcontroller by Raspberry Pi, with the dual Cortex M0+ RP2040 chip.
+% https://www.raspberrypi.com/news/raspberry-pi-pico-2-our-new-5-microcontroller-board-on-sale-now/
+% It was released in 2021 and since then has been sold nearly 4 million times [CITE].
+% It is commonly used in the Internet of Things, e.g., in LoRaWAN networks \cite{LoRaWAN-RP2040}, for on-device machine learning \cite{TinyML-RP2040, tinyml-healthcare, tinyRL-RP2040}, or in healthcare \cite{IoMT-RP2040, tinyml-healthcare}.
+
+%\textbf{The ESP32-S3} with dual Xtensa LX7 cores has been specifically designed for the Artificial Internet of Things (AIoT) that has gained great relevance in recent years. It is used, e.g., for Human Activity Recognition (HAR) \cite{HAR-audio-data, HAR-wifi-csi} or environmental monitoring \cite{environmental-monitoring}.
+
+
+\iffalse
+
+\textbf{Lacking embedded Rust OS support for multicore -- } The bulk of recent efforts on embedded Rust has been dedicated to asynchronous (async) Rust, i.e. cooperative multi-tasking without threads/scheduler, for instance as provided by Embassy~\cite{embassy}. Surprisingly, however, none of the embedded Rust OS or frameworks support multicore scheduling to this day---while several older OS written in C/C++ do.
+In fact, this gap becomes problematic because a large part of the newer MCU architectures that appear on the market nowadays are multicore---and this trend is here to stay. 
+
+Exploiting multicore efficiently is required to allow the execution of computation-intensive tasks, %(e.g. TinyML or post-quantum cryptography)  which must be executed on-board 
+while the device remains available for sensing, actuation, or push/pull of data over the network. For instance, dual-core microcontrollers such as RP2040 or dual-core Xtensa LX7 are commonly used in Internet of Things, e.g., in LoRaWAN networks~\cite{LoRaWAN-RP2040}. Similar hardware is used for on-device machine learning~\cite{TinyML-RP2040, tinyml-healthcare, tinyRL-RP2040}, in healthcare~\cite{IoMT-RP2040, tinyml-healthcare}, for Human Activity Recognition (HAR)~\cite{HAR-audio-data, HAR-wifi-csi} or for environmental monitoring~\cite{environmental-monitoring}. Multicore scheduling is therefore a \emph{must-have} to exploit to its full potential the capacities of distributed computing in the IoT.
+
+\fi 
+
+% Aiming to bridge this gap:
+%our paper presents \OSname{}, the first embedded Rust operating system combining a multicore scheduler and asynchronous (async) Rust. %Note that in this paper, we focus on SMP, not on AMP.
+%In this context, the work we present next in 
+%\textbf{our paper contributes the following}:
+% \begin{itemize}
+%     \item We design 1, a novel embedded Rust operating system combining
+%     \begin{enumerate*}[label=(\roman*)]
+%         \item a scheduler exploiting single- and multicore  microcontrollers, and 
+%         \item asynchronous Rust;
+%     \end{enumerate*}% based on Symmetric Multiprocessing (SMP);
+% %    \item We implement \OSname{} and we detail how the implementation takes advantage of Rust characteristics;
+%     \item We implement 1 and provide benchmarks on diverse 32-bit microcontroller architectures: ARM \mbox{Cortex\nobreakdash-M}, Espressif Xtensa, and RISC-V;
+%  %   \item We provide micro-benchmarks using \OSname{} on different microcontroller architectures;%, which demonstrate substantial benefits and negligible overhead of multicore scheduling, compared to single-core use;
+%     \item We overview the OS, which, beyond the scheduler, integrates diverse libraries and cross-hardware APIs;
+%     \item We publish the full 1 code as open source. % including the micro-benchmark code.
+    
+% \end{itemize}
+
+为了填补这一空白：
+%我们的论文介绍了 \OSname{}，这是首个结合了多核调度器和异步（async）Rust 的嵌入式 Rust 操作系统。%请注意，在本文中，我们关注的是对称多处理（SMP），而不是非对称多处理（AMP）。
+%在此背景下，我们在本文中介绍的工作
+%\textbf{我们的论文做出了以下贡献}：
+\begin{itemize}
+    \item 我们设计了 \OSname{}，这是一个创新的嵌入式 Rust 操作系统，它结合了以下特性：
+    \begin{enumerate}[label=(\roman*)]
+        \item 针对单核与多核微控制器优化的调度器；
+        \item 异步 Rust；
+    \end{enumerate}% 基于对称多处理（SMP）；
+%    \item 我们实现了 \OSname{}，并详细说明了实现如何利用 Rust 的特性；
+    \item 我们实现了 \OSname{}，并在多种主流 32 位微控制器架构上进行了性能测试，包括 ARM \mbox{Cortex\nobreakdash-M}、Espressif Xtensa 和 RISC-V；
+%   \item 我们在不同的微控制器架构上使用 \OSname{} 提供了微基准测试；%，这些测试展示了与单核使用相比，多核调度的显著优势和微不足道的开销；
+    \item 们对操作系统进行了全面概述，它不仅包含调度器，还集成了多种库和跨硬件的 API；
+    \item 我们将 \OSname{} 的完整代码开源发布。% 包括微基准测试代码。
+    
+\end{itemize}

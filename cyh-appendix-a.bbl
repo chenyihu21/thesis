@@ -1,4 +1,4 @@
-\begin{thebibliography}{2}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax\else
@@ -11,16 +11,124 @@
   \let\eprint\href
 \fi
 
-\bibitem[Dupont(1974)]{dupont1974bone}
-Dupont B.
-\newblock Bone marrow transplantation in severe combined immunodeficiency with an unrelated mlc compatible donor\allowbreak[C]//\allowbreak
-White H~J, Smith R.
-\newblock Proceedings of the third annual meeting of the International Society for Experimental Hematology.
-\newblock Houston: International Society for Experimental Hematology, 1974: 44-46.
+\bibitem[Bormann et~al.(2014)Bormann, Ersue, and Keränen]{rfc7228}
+Bormann C, Ersue M, Keränen A.
+\newblock Request for comments: No. 7228\quad {Terminology for Constrained-Node Networks}\allowbreak[M/OL].
+\newblock RFC Editor, 2014.
+\newblock \url{https://www.rfc-editor.org/info/rfc7228}.
+\newblock DOI: \doi{10.17487/RFC7228}.
 
-\bibitem[郑开青(1987)]{zhengkaiqing1987}
-郑开青.
-\newblock 通讯系统模拟及软件\allowbreak[D].
-\newblock 北京: 清华大学无线电系, 1987.
+\bibitem[Hahm et~al.(2015)]{hahm2015operating}
+Hahm O, et~al.
+\newblock {Operating systems for low-end devices in the Internet of Things: a survey}\allowbreak[J].
+\newblock IEEE Internet of Things Journal, 2015.
+
+\bibitem[Levy et~al.(2015)]{levy2015ownership}
+Levy A, et~al.
+\newblock {Ownership is theft: Experiences building an embedded OS in Rust}\allowbreak[C]//\allowbreak
+ACM PLOS.
+\newblock 2015.
+
+\bibitem[{The Rust Community}(2024)]{embedded-rust-book}
+{The Rust Community}.
+\newblock {The Embedded Rust Book}\allowbreak[EB/OL].
+\newblock 2024.
+\newblock \url{https://docs.rust-embedded.org/book/}.
+
+\bibitem[hub(2025)]{hubris}
+{Hubris OS}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/oxidecomputer/hubris}.
+
+\bibitem[dro(2025)]{drone-os}
+{Drone OS}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/drone-os}.
+
+\bibitem[rti(2025)]{rtic}
+{RTIC}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/rtic-rs/rtic}.
+
+\bibitem[emb(2025)]{embassy}
+{Embassy Framework}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/embassy-rs/embassy}.
+
+\bibitem[thr(2025)]{threadx}
+{Eclipse ThreadX}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/eclipse-threadx}.
+
+\bibitem[fre(2025)]{freertos}
+{FreeRTOS}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://www.freertos.org/}.
+
+\bibitem[zep(2025)]{zephyr}
+{Zephyr Project}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://zephyrproject.org/}.
+
+\bibitem[nut(2025)]{nuttx}
+{Apache NuttX}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://nuttx.apache.org/}.
+
+\bibitem[Baccelli et~al.(2018)]{baccelli2018riot}
+Baccelli E, et~al.
+\newblock {RIOT: An open source operating system for low-end embedded devices in the IoT}\allowbreak[J].
+\newblock IEEE Internet of Things Journal, 2018.
+
+\bibitem[Davis et~al.(2011)Davis and Burns]{hardrealtime-multiprocessor-survey}
+Davis R~I, Burns A.
+\newblock A survey of hard real-time scheduling for multiprocessor systems\allowbreak[J].
+\newblock ACM Comput. Surv., 2011.
+
+\bibitem[Brandenburg(2011)]{brandenburg}
+Brandenburg B~B.
+\newblock {Scheduling and Locking in Multiprocessor Real-Time Operating Systems}\allowbreak[C]//\allowbreak
+PhD Diss., Uni. North Carolina.
+\newblock 2011.
+
+\bibitem[Zapata et~al.(2005)Zapata and {\'A}lvarez]{EDF-RM-multiprocessor-survey}
+Zapata O, {\'A}lvarez P~M.
+\newblock {EDF and RM Multiprocessor Scheduling Algorithms : Survey and Performance Evaluation}\allowbreak[C]//\allowbreak
+2005.
+
+\bibitem[Klabnik et~al.(2022)Klabnik and Nichols]{rust-book_traits}
+Klabnik S, Nichols C.
+\newblock The rust programming language\allowbreak[M].
+\newblock 2022.
+
+\bibitem[ari(2025)]{ariel-benchmarks}
+{Ariel OS Benchmarks}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/elenaf9/ariel-os-benchmarks}.
+
+\bibitem[Warden(2024)]{pico-mem-layout}
+Warden P.
+\newblock {Understanding the Raspberry Pi Pico’s Memory Layout}\allowbreak[Z].
+\newblock 2024.
+
+\bibitem[ari(2025)]{ariel-os-repo}
+{Ariel OS}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/ariel-os/ariel-os}.
+
+\bibitem[smo(2025)]{smoltcp}
+{SmolTCP Net. Stack}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/smoltcp-rs/smoltcp}.
+
+\bibitem[Tschofenig et~al.(2019)Tschofenig and Baccelli]{tschofenig2019cyberphysical}
+Tschofenig H, Baccelli E.
+\newblock {Cyberphysical Security for the Masses: A Survey of the Internet Protocol Suite for Internet of Things Security}\allowbreak[J].
+\newblock IEEE Security \& Privacy, 2019.
+
+\bibitem[laz(2025)]{laze}
+{Laze Meta-Build System}\allowbreak[EB/OL].
+\newblock 2025.
+\newblock \url{https://github.com/kaspar030/laze}.
 
 \end{thebibliography}

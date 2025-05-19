@@ -4,9 +4,9 @@
 
 \section{starry-next 宏内核整体架构}
 
-Starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。它实现了一个兼容 Linux 的系统调用接口，同时支持多种硬件架构，包括 x86\_64、riscv64、aarch64 和 loongarch64。
+starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。它实现了一个兼容 Linux 的系统调用接口，同时支持多种硬件架构，包括 x86\_64、riscv64、aarch64 和 loongarch64。
 
-代码结构上，Starry-next 主要由以下模块组成：
+代码结构上，starry-next 主要由以下模块组成：
 
 \begin{itemize}
 \item core：基于 ArceOS 的底层支持实现 StarryOS 的核心内核功能，包括内存管理（mm）、任务管理（task）和时间管理（time）等。其中内存管理模块负责分配、释放和映射，如 copy\_from\_kernel 函数用于将内核空间的映射复制到用户地址空间，load\_user\_app 函数用于加载用户应用程序到内存中。任务管理模块处理任务和线程的创建、调度和管理，例如 new\_user\_task 函数用于创建新的用户任务。时间管理模块管理系统时间和定时器。
@@ -15,7 +15,7 @@ Starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。�
 \item 其他：包括用于适配不同架构的配置文件和工具链，以及用于构建和运行 StarryOS 的构建工具和脚本。
 \end{itemize}
 
-功能上，Starry-next 也可以划分为较为独立的模块：
+功能上，starry-next 也可以划分为较为独立的模块：
 
 \begin{itemize}
 \item 内存管理模块：负责管理物理内存和虚拟内存，包括内存分配、映射和释放等操作。
@@ -64,7 +64,7 @@ api 层的函数会检查参数的类型、取值范围等是否符合系统调�
 
 在上一节的初始化过程中提到，要运行应用程序，首先需要将其加载到内存空间中。本节将详细介绍 starry-next 是如何加载应用程序到内存空间并执行的。
 
-要加载应用程序到内存空间中，首先要创建一个新的用户地址空间，并将内核地址空间的映射复制到用户地址空间，同时映射信号处理的跳板代码。这一步在 run\_user\_app 函数中完成。
+加载应用程序到内存空间中，首先要创建一个新的用户地址空间，并将内核地址空间的映射复制到用户地址空间，同时映射信号处理的跳板代码。这一步在 run\_user\_app 函数中完成。
 接下来，调用 load\_user\_app 函数加载将用户应用程序加载到用户地址空间。该函数使用 axfs::api::read 函数从文件系统中读取用户应用程序的ELF文件数据并进行解析，
 如果ELF文件指定了动态链接器（解释器），则递归调用 load\_user\_app 加载。其中，解释器是一种能够将源代码逐行翻译成机器代码并执行的程序，负责加载和解析可执行文件所依赖的共享库。
 然后使用 map\_elf 函数将ELF文件中的段映射到用户地址空间中，这一步使用了 map\_alloc 进行的物理页的分配和映射。
@@ -72,11 +72,24 @@ api 层的函数会检查参数的类型、取值范围等是否符合系统调�
 
 完成程序的加载后，内核会根据用户地址空间创建任务实例，设置任务上下文等相关信息，并将该任务与新的进程和线程关联起来。
 最后调用 axtask::spawn\_task 接口将任务添加到任务调度器中，等待调度器调度执行。
+run\_user\_app 和 load\_user\_app 函数的流程如图\ref{fig:run-user-app}和\ref{fig:load-user-app}所示。
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=1\linewidth, keepaspectratio]{load-app.png}
-%     \caption{starry-next 加载程序到内存空间}
+\begin{figure}
+\centering %图片全局居中
+%并排几个图，就要写几个minipage
+\begin{minipage}[b]{0.3\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+\centering %图片局部居中
+\includegraphics[width=1\textwidth]{run-user-app.png} %此时的图片宽度比例是相对于这个minipage的，不是全局
+\caption{run\_user\_app 函数流程图}
+\label{fig:run-user-app}
+\end{minipage}
+\begin{minipage}[b]{0.65\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+\centering %图片局部居中
+\includegraphics[width=1\textwidth]{load-user-app.png}%此时的图片宽度比例是相对于这个minipage的，不是全局
+\caption{load\_user\_app 函数流程图}
+\label{fig:load-user-app}
+\end{minipage}
+\end{figure}
 
 
 \section{starry-next 内存管理模块}

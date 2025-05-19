@@ -1,0 +1,130 @@
+% !TeX root = ../cyh.tex
+
+\newcommand{\OSname}{Ariel~OS}
+\newcommand{\espcthree}{ESP32\nobreakdash-C3}
+\newcommand{\espsthree}{ESP32\nobreakdash-S3}
+\newcommand\noteEB[1]{\textcolor{red}{EB: #1}}
+\newcommand\noteEF[1]{\textcolor{blue}{EF: #1}}
+\newcommand\noteKS[1]{\textcolor{brown}{KS: #1}}
+\newcommand\noteKZ[1]{\textcolor{navy}{KZ: #1}}
+\newcommand\noteCA[1]{\textcolor{gray}{CA: #1}}
+\begin{translation}
+\label{cha:translation}
+
+\title{Ariel OS：适用于网络传感器和多核微控制器的嵌入式Rust操作系统}
+\maketitle
+
+\begin{abstract}
+\input{translate/text/abstract.tex}
+\thusetup{
+    keywords = {嵌入式软件、Rust、微控制器、多核、操作系统、实时操作系统（RTOS）、物联网（IoT）},
+  }
+\end{abstract}
+
+% \tableofcontents
+
+% \begin{IEEEkeywords}
+% % Embedded Software, Rust, Microcontroller, Multicore, Operating System, RTOS, Internet of Things, IoT 
+% 嵌入式软件、Rust、微控制器、多核、操作系统、实时操作系统（RTOS）、物联网（IoT）
+% \end{IEEEkeywords}
+
+
+
+\input{translate/text/introduction}
+% %\input{text/related-work}
+\input{translate/text/background}
+\input{translate/text/goals}
+\input{translate/text/single-core}
+\input{translate/text/design}
+\input{translate/text/implementation}
+\input{translate/text/benchmarks}
+\input{translate/text/user-guide}
+\input{translate/text/conclusion}
+
+% \bibliographystyle{translate/IEEEtran}
+% \bibliography{translate/tlrefs.bib}
+
+
+
+% 大量原本用C/C++实现的低级系统软件组件，目前正在被用Rust语言重新编写。Rust是一种相对更安全、更可靠的编程语言。然而，到目前为止，还没有用Rust编写的嵌入式操作系统支持微控制器上的多核抢占式调度。因此，本文填补了这一空白，提出了一个新的操作系统：Ariel OS。我们描述了它的设计，提供了其实现的源代码，并在主流的32位微控制器架构上进行了微基准测试，包括ARM Cortex-M、RISC-V和Espressif Xtensa。我们展示了我们的调度器如何在利用多核优势的同时，仅在单核硬件上产生极小的额外开销。正因如此，Ariel OS 为研究和行业从业者针对小型联网设备提供了一个便捷的嵌入式软件平台。
+
+
+% \section{图表示例}
+
+% \subsection{图}
+
+% 附录中的图片示例（图~\ref{fig:appendix-translation-figure}）。
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.6\linewidth]{example-image-a.pdf}
+%   \caption{附录中的图片示例}
+%   \label{fig:appendix-translation-figure}
+% \end{figure}
+
+
+% \subsection{表格}
+
+% 附录中的表格示例（表~\ref{tab:appendix-translation-table}）。
+
+% \begin{table}
+%   \centering
+%   \caption{附录中的表格示例}
+%   \begin{tabular}{ll}
+%     \toprule
+%     文件名          & 描述                         \\
+%     \midrule
+%     thuthesis.dtx   & 模板的源文件，包括文档和注释 \\
+%     thuthesis.cls   & 模板文件                     \\
+%     thuthesis-*.bst & BibTeX 参考文献表样式文件    \\
+%     thuthesis-*.bbx & BibLaTeX 参考文献表样式文件  \\
+%     thuthesis-*.cbx & BibLaTeX 引用样式文件        \\
+%     \bottomrule
+%   \end{tabular}
+%   \label{tab:appendix-translation-table}
+% \end{table}
+
+
+% \section{数学公式}
+
+% 附录中的数学公式示例（公式\eqref{eq:appendix-translation-equation}）。
+% \begin{equation}
+%   \frac{1}{2 \uppi \symup{i}} \int_\gamma f = \sum_{k=1}^m n(\gamma; a_k) \mathscr{R}(f; a_k)
+%   \label{eq:appendix-translation-equation}
+% \end{equation}
+
+
+% \section{文献引用}
+
+% 附录\cite{dupont1974bone}中的参考文献引用\cite{merkt1995rotational}示例
+% \cite{dupont1974bone,merkt1995rotational}。
+
+
+% \appendix
+
+% \section{附录}
+
+% 附录的内容。
+
+
+% 书面翻译的参考文献
+% 默认使用正文的参考文献样式；
+% 如果使用 BibTeX，可以切换为其他兼容 natbib 的 BibTeX 样式。
+% \bibliographystyle{unsrtnat}
+% \bibliographystyle{IEEEtranN}
+
+% 默认使用正文的参考文献 .bib 数据库；
+% 如果使用 BibTeX，可以改为指定数据库，如 \bibliography{ref/refs}。
+\printbibliography
+
+% 书面翻译对应的原文索引
+% \begin{translation-index}
+%   \nocite{mellinger1996laser}
+%   \nocite{bixon1996dynamics}
+%   \nocite{carlson1981two}
+%   \bibliographystyle{unsrtnat}
+%   \printbibliography
+% \end{translation-index}
+
+
+\end{translation}

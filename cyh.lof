@@ -1,0 +1,43 @@
+\contentsline {figure}{\numberline {2.1}{\ignorespaces ArceOS 内核结构图}}{8}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces ArceOS 内存管理系统}}{9}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces axhal 内存管理相关结构图}}{10}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Sv39 标准下虚实地址结构、页表结构和寻址过程}}{11}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces axalloc 结构图}}{11}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Slab 算法示意图}}{12}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Buddy 算法示意图}}{13}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces TLSF 算法示意图}}{13}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces axmm 结构图}}{15}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces AddrSpace 结构体接口}}{16}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces axdma 结构图}}{17}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces DmaAllocator 结构体接口}}{17}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces 分页的重建映射阶段}}{18}{figure.caption.28}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces handle\_page\_fault 函数流程图}}{20}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces starry-next 宏内核架构}}{22}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces 系统调用流程}}{23}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces starry-next 内存管理模块结构}}{23}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces run\_user\_app 函数流程图}}{24}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces load\_user\_app 函数流程图}}{24}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces starry-next 页异常处理}}{26}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces 物理内存布局}}{27}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces 进程虚拟空间布局}}{27}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces 安全内存访问流程}}{28}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces mmap 系统调用流程}}{30}{figure.caption.38}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces munmap 系统调用流程}}{32}{figure.caption.39}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces munmap 处理交叉区域}}{33}{figure.caption.40}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces brk 系统调用流程}}{34}{figure.caption.41}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces mprotect 系统调用流程}}{35}{figure.caption.42}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces sysinfo 系统调用流程}}{36}{figure.caption.43}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces arch\_prctl 系统调用流程}}{37}{figure.caption.44}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces prlimit64 系统调用流程}}{38}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces sysinfo 和 prlimit64 测试结果}}{42}{figure.caption.46}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces rlimit\_open\_files 测例结果}}{42}{figure.caption.47}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces 自定义 mmap 测试用例的运行时间对比}}{42}{figure.caption.48}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces 重复进行系统调用的运行时间对比}}{43}{figure.caption.49}%
+\let \contentsline \ttl@gobblecontents 
+\contentsline {figure}{\numberline {A.1}{\ignorespaces 双核系统上的线程启动}}{49}{figure.caption.53}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces 两种多核调度器设计的上下文切换性能与单核配置的对比 }}{53}{figure.caption.54}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces 在单核硬件上测量的多核调度特性开销 }}{54}{figure.caption.55}%
+\contentsline {figure}{\numberline {A.4}{\ignorespaces \(N\times N\) 矩阵的乘积, \(N\in \{10, 20, ..., 80\}\)}}{54}{figure.caption.56}%
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Ariel~OS{} 体系结构图}}{55}{figure.caption.57}%
+\contentsfinish 
+\contentsfinish 

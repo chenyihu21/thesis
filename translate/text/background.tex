@@ -1,0 +1,96 @@
+\iffalse
+\section{Additional Background on Schedulers}
+\label{sec:background}
+
+%Scheduler-savvy readers can skip this section. 
+Scheduling describes the process of assigning a program's units of execution---i.e. \textit{threads}---to the available processors (\emph{cores}).
+When a thread executes on a processor, it runs until it either cooperatively stops its own execution (\textit{yielding}) or is interrupted mid-execution by the scheduler (\textit{preemption}).
+In both of these cases, the scheduler is invoked through a processor exception that interrupts normal thread execution, switches the processor into interrupt mode, and executes the scheduler interrupt handler.
+
+This handler performs a \textit{context switch}.
+A context switch describes the process of saving the state of the previously running thread, i.e., saving its program counter and register state, and loading the state of the next thread from its \textit{Thread Control Block} (TCB).
+
+The loaded state of the next thread is the exact state that thread was in when it was last interrupted.
+In \textit{real-time scheduling}, each thread has a priority that affects when it is scheduled.
+The scheduler must prioritize the execution of higher priority threads over the execution of lower priority ones.
+Same priority threads are either scheduled in a \textit{time-sliced} fashion, or---in case of a \textit{tickless} scheduler---cooperatively.
+Ready, waiting threads are listed in a sorted data structure called the \emph{runqueue}, whereby the head of the runqueue is the thread that should be executed next.
+
+To prevent conflicting accesses to shared resources and data races, \emph{critical sections} can be used to implement mutual exclusion for a resource between threads.
+While one thread is executing a critical section, no other critical section may be entered by another thread.
+Furthermore, synchronization and Inter-Process Communication (IPC) between thread is commonly implemented through primitives such as thread flags---per-thread bitmasks---channels or locks. For further reading, we refer to~\cite{hardrealtime-multiprocessor-survey,Bos2023}.
+%\noteCA{My layman's impression is that both critical sections and atomics are viable for implementing mutual exclusion. Was that a choice made here? If so, might say ``data races, \em{we choose} critical sections to implement''} \noteKS{ Uh, definition time ... Atomics on their own can only do mutual exclusion through spinning / busy looping (or going non-blocking try\_lock). and be used to implement critical sections}
+
+% \noteEB{how about also introducing terms: synchronization, critical section? }
+% \noteEF{Done critical section. Not sure if we need to explain sychronization; kinda difficult to do it without using the term itself.}
+When transitioning from single- to multicore scheduling, the main challenges are
+\begin{enumerate*}[label=(\roman*)]
+\item the efficient distribution of the threads to the available cores, 
+\item avoiding race conditions in the scheduler, 
+\item maintaining a low overhead for cross-core runqueue maintenance, and 
+\item avoiding idle cores and priority inversions.
+\end{enumerate*}
+% (i) minimizing the overhead of cross-core runqueue maintenance and (ii) determining efficiently which core a given thread should be assigned to. 
+% \noteEB{can someone review/improve the above?}
+%\noteEF{I find it hard to decide what to include here and what not. 4 aspects are maybe too much? Feel free to reorder or cut down parts of it.}
+% context/TCB, Runqueue, Tickless, Preemptive, fixed priority, context switch, Async Tasks vs scheduled Threads
+
+
+
+%  Background in global scheduling impl in other OSes (ThreadX, FreeRTOS etc) -> move details from Related Work Section
+
+\fi
+
+\section{微控制器上的多核调度的相关研究} \label{sec:multicore-sched}
+
+
+% Surveying existing software and prior literature, we found that notable examples of multicore scheduling on microcontrollers include ThreadX~\cite{threadx} and FreeRTOS~\cite{freertos}, Zephyr~\cite{zephyr} and NuttX~\cite{nuttx}.
+% %we listed in Section \ref{sec:related-work}, 
+% Typically, threads that are ready and waiting for execution are listed  in a sorted data structure called the \emph{runqueue}. %whereby the head of the runqueue is the thread that should be executed next.
+% We observe two main approaches for runqueues on multicore architectures. The first approach, \textit{global scheduling}, uses a single global runqueue from which the threads are distributed onto the available cores.
+% In contrast, the \textit{partitioned scheduling} approach employs separate runqueues for each processor, to which threads are statically allocated.
+% Furthermore, we observed that OSs for microcontrollers that support multicore scheduling primarily use global scheduling.
+% We also observed that for synchronization within the scheduler, global critical sections are typically used.
+
+在对现有软件和相关文献进行调研后，我们发现微控制器上的多核调度的显著示例包括 ThreadX~\cite{threadx} 和 FreeRTOS~\cite{freertos}，以及 Zephyr~\cite{zephyr} 和 NuttX~\cite{nuttx}。
+%我们在第 \ref{sec:related-work} 节中列出了这些内容，
+通常，处于就绪状态且等待执行的线程会被列入一个称为 \emph{运行队列}（runqueue）的有序数据结构中。%运行队列的头部是下一个将被执行的线程。
+我们观察到在多核架构上，运行队列主要有两种方法。第一种方法是 \textit{全局调度}，它使用一个单一的全局运行队列，线程从该队列中被分配到可用的核上。
+相比之下，\textit{分区调度} 方法为每个处理器使用单独的运行队列，线程被静态分配到这些队列中。
+此外，我们还观察到，支持多核调度的微控制器操作系统主要使用全局调度。
+我们还发现，在调度器内部进行同步时，通常会使用全局临界区。
+
+% We finally observed that operating systems in this space employ different approaches for assigning threads to cores. 
+% On the one hand ThreadX uses a \textit{core reallocation approach}, whereby a reallocation routine maps the \textit{n} highest priority threads to the \textit{N} cores. 
+% % The allocation for each core is stored in an array that the scheduler interrupt handler reads upon invocation. 
+% The allocation for each core is read by the scheduler interrupt handler upon invocation. 
+% After each change in the runqueue, the reallocation routine---in ThreadX called \textit{rebalance}---is executed.
+我们还发现，这一领域的操作系统在将线程分配给核心时采用了不同的方法。
+一方面，ThreadX 采用了一种 \textit{核心重分配方法}，即通过一个重分配例程将优先级最高的 \textit{n} 个线程映射到 \textit{N} 个核心上。
+% 每个核心的分配存储在一个数组中，调度器中断处理程序在被调用时会读取该数组。
+调度器中断处理程序在每次被调用时，会读取为每个核心分配的线程信息。
+在运行队列发生每次变化后，ThreadX 中的重分配例程—— \textit{rebalance}——会被执行。
+% It compares the previous allocation with the current highest priority threads in the runqueue, and updates the core allocation list with the goal of minimizing changes, and thus thread migration. Based on the allocation changes, the routine returns the ID of the core where a context switch is needed.
+
+% On the other hand, FreeRTOS, Zephyr or NuttX use variants of a \textit{dynamic thread selection approach}, whereby the next thread for a core is selected directly from the runqueue by the scheduler interrupt handler upon invocation.
+% The thread is then removed from the runqueue to prevent it from being selected for multiple cores. Conversely, when a running thread is preempted, it is re-added to the runqueue. 
+另一方面，FreeRTOS、Zephyr 和 NuttX 采用了 \textit{动态线程选择方法} 的变体。在这种方法中，调度器中断处理程序在被调用时直接从运行队列中选择某个核心的下一个线程。
+随后，该线程将从运行队列中移除，以防止其被多个核心选中。相反，当一个正在运行的线程被抢占时，它将重新加入运行队列。
+% The scheduler uses the information it has readily available about thread state changes to trigger a scheduler interrupt on the specific core where a context switch is needed. For instance, if a high-priority thread becomes ready, the scheduler interrupt is set for the core that is currently executing the lowest-priority thread.
+
+%and support variants of core affinity masks for binding a thread to one or multiple cores.
+% \noteEF{Omit following details?}
+% In FreeRTOS, RT-Thread, and NuttX, the next thread for a core is selected by the scheduler interrupt handler upon invocation by iterating the runqueue for the next thread with matching core affinity.
+% Zephyr implements similar logic for iterating the runqueue; however, this is done outside of the scheduler interrupt handler, and the result is then cached.
+% RT-Thread doesn't iterate the runqueue, but instead implements additional local per-CPU runqueues for threads that are bound to just one core, and selects the highest-priority thread between the two queues.
+% ThreadX implements an alternative approach, where threads are mapped to cores using a \textit{rebalance} routine that executes after relevant thread state changes and stores the result in an array.
+% \noteEF{(end of details)}
+
+%All studied operating systems primarily implement global scheduling and support variants of core affinity masks for binding a thread to one or multiple cores.
+% \noteEF{Omit following details?}
+% In FreeRTOS, RT-Thread, and NuttX, the next thread for a core is selected by the scheduler interrupt handler upon invocation by iterating the runqueue for the next thread with matching core affinity.
+% Zephyr implements similar logic for iterating the runqueue; however, this is done outside of the scheduler interrupt handler, and the result is then cached.
+% RT-Thread doesn't iterate the runqueue, but instead implements additional local per-CPU runqueues for threads that are bound to just one core, and selects the highest-priority thread between the two queues.
+% ThreadX implements an alternative approach, where threads are mapped to cores using a \textit{rebalance} routine that executes after relevant thread state changes and stores the result in an array.
+% \noteEF{(end of details)}
+%For synchronization within the scheduler, global critical sections are used.

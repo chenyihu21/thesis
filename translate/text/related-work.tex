@@ -1,0 +1,41 @@
+\subsection{Related Work}
+\label{sec:related-work}
+% - Related work in context of scheduling 
+% - What support is in RTOSes
+% (condensed from thesis)
+
+
+%Prior work on schedulers leveraging the multicore capacity on such hardware includes three main areas, i.e. literature on (i)  multicore scheduling algorithms/schemes, (ii) multicore scheduling support on microcontrollers and (iii) embedded Rust software platforms.
+
+\textbf{Multicore Scheduling Schemes ---} The traditional approach to multicore scheduling is to adapt uniprocessor real-time scheduling algorithms such as Earliest Deadline First (EDF) or Rate Monotonic (RM).
+The main categories of approaches are global, partitioned, or hybrid scheduling. The performance of global vs. partitioned EDF and RM scheduling was studied in~\cite{P-PF-partition-or-not, hardrealtime-multiprocessor-survey, GRMS, EDF-RM-multiprocessor-survey}. These indicate global scheduling is a better fit for soft real-time, while partitioned scheduling is a better fit for hard real-time and/or cases with a large number of cores.
+\iffalse
+Their findings are that global scheduling is generally more favorable for soft real-time systems because it can balance out individual deadline misses. 
+Partitioned scheduling, on the other hand, is more suited for hard real-time systems because deadline misses on one core won’t affect any of the other cores. 
+Furthermore, they showed that partitioned schemes scale better for a large processor count.
+\fi
+Other scheduling schemes include clustered or semi-partitioned scheduling~\cite{brandenburg, hardrealtime-multiprocessor-survey, energy-efficient-sched-for-HRT}, as well as schemes that specifically consider inter-task dependencies~\cite{allocate-dags-to-multiprocessors, shared-resources-coolocation, scheduling-task-on-heterogenous-multicore, mapping-in-multicore, resource-oriented-partitioned-scheduling} or power usage~\cite{scheduling-for-low-power-platforms}.
+
+\textbf{Multicore Scheduling on Microcontrollers ---} Widely used operating systems providing thread schedulers in the microcontroller segment include Zephyr~\cite{zephyr}, FreeRTOS~\cite{freertos}, RIOT~\cite{baccelli2018riot}, ThreadX~\cite{threadx}, or Contiki~\cite{dunkels2004contiki}, and others surveyed for instance in~\cite{hahm2015operating}. These OS are primarily written in C---although some started to include Rust modules marginally~\cite{riot-wrappers}.
+Some OS offer configurations supporting multicore scheduling, 
+%Specifically, we surveyed the implementation in
+for instance FreeRTOS, ThreadX, Zephyr, NuttX~\cite{nuttx}, and RT-Thread~\cite{rt-thread}. None of these are written in Rust.
+
+
+\textbf{Embedded Rust Software Platforms ---} A number of embedded Rust operating systems has emerged over the last years. 
+The most prominent ones are Tock OS~\cite{levy2017tock} and Hubris~\cite{hubris}. RIOT-rs~\cite{riot-rs} is a rewrite of RIOT in Rust. %\noteCA{Should this reference point to a version when it was still a rewrite in its early stage? The repo there is an October 2024 version, which is already more Ariel than a RIOT rewrite.}\noteKS { IMO the point just before multicore was merged is fine (or close to that, whatever Elena chose). those early days were super experimental ...}. 
+Other operating systems include for instance Drone OS~\cite{drone-os} %Bern RTOS 
+or R3-RTOS~\cite{r3-rtos} and others surveyed in~\cite{vandervelden2024rust-os}.
+Last but not least, two prominent concurrency frameworks, RTIC~\cite{rtic} and Embassy~\cite{embassy}, are well known embedded software platforms for applications with concurrent tasks. 
+Both lack a software kernel however, and provide limited portability.
+%\noteCA{RTIC before 2.0 was not async based, and may warrant some consideration; in a sense, it did offer a form of scheduling, but with a very limited scope.}
+% Concerning portabilit: I'm referring here to the fact that its not possible to simply compile the same application for another target, since individual configurations, initialization and dependencies must be changed. Can this be expressed better?
+% We observe that none of the embedded Rust operating systems support multicore scheduling.
+%Embassy supports some level of multiple core usage: on the RP2040 and ESP32 families, 
+In particular, Embassy is a popular framework using async Rust (instead of threads and scheduling) and enables manual spawning of a task executor on a second core on RP2040 and ESP32 families (but no multicore scheduler). %While this somewhat resembles a partitioned scheduling scheme, basic scheduling features such as priority-based scheduling or separate task stacks are not supported \noteKS { But executors do have separate stacks? }. 
+%\noteEF{ But not separate stacks per task }.
+% Mention and give references for Tock OS~\cite{levy2017tock}, Drone~OS, Hubris, Drogue, and others surveyed for instance in~\cite{vandervelden2024rust-os}.
+% Mention and distinguish also HAL/frameworks such as RTIC, Embassy~\cite{embassy}.
+% We observe that none of the embedded Rust software plaftorms support multicore scheduling.
+
+

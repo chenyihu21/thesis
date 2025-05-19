@@ -6,6 +6,56 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \renewcommand{\lstlistingname}{清单}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{tikz} 
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usetikzlibrary{shapes,calc,backgrounds,positioning,arrows.meta,patterns}
+\usepackage{flushend}
+  
+\definecolor{myYellow}{RGB}{253, 231, 37}  
+\definecolor{myLime}{RGB}{173,220,48}  
+\definecolor{myGreen}{RGB}{94,201, 98}  
+\definecolor{myGreenish}{RGB}{40,174,128}  
+\definecolor{myTeal}{RGB}{33, 145, 140}  
+\definecolor{myOcean}{RGB}{44,114,142}  
+\definecolor{myBlue}{RGB}{59, 82, 139}  
+\definecolor{myPurple}{RGB}{71,45,123}  
+\definecolor{myEggplant}{RGB}{68, 1, 84}  
+\pgfplotsset{compat=1.18}  
+\usepgfplotslibrary{colormaps}  
+\pgfplotsset{/pgfplots/bar cycle list/.style={/pgfplots/cycle list={%  
+    {myTeal,fill=myTeal!80!white,mark=none,postaction={pattern=north west lines, pattern color=myTeal!70!black}},%  
+    {myEggplant!60!black,fill=myEggplant!80!white,mark=none,postaction={pattern=north east lines, pattern color=myEggplant!70!black}},
+    {myYellow,fill=myYellow!80!white,mark=none,postaction={pattern=crosshatch,pattern color=myYellow!70!black}},
+    {myGreen,fill=myGreen!80!white,mark=none,postaction={pattern=vertical,pattern color=myGreen!70!black}},  
+    {myblue,fill=myBlue!80!white,mark=none,postaction={pattern=grid,pattern color=myBlue!70!black}},  
+},},}                            
+  
+\pgfplotsset{
+    ourybarstyle/.style={
+        axis x line*=bottom,  
+        axis y line*=left,           
+        ymin=0,  
+        xtick=data,  
+        ylabel style={at={(yticklabel* cs:1)}, anchor=south east, rotate=-90},  
+        nodes near coords,  
+        nodes near coords align={vertical},  
+    },  
+    ourbarstylenonums/.style={
+        axis x line*=bottom,  
+        axis y line*=left,           
+        ymin=0,  
+        xtick=data,  
+        ylabel style={at={(yticklabel* cs:1)}, anchor=south east, rotate=-90},  
+    },
+    ourlinestyle/.style={
+        ymin=0,  
+    },  
+}  
+
+\setlength{\columnsep}{0.24 in}
 
 \lstset{
     basicstyle=\ttfamily\small,
@@ -58,18 +108,18 @@
 % \copyrightpage[file=scan-copyright.pdf]
 
 \frontmatter
-% \input{data/abstract}
+\input{mydata/abstract}
 
 % 目录
 \tableofcontents
 
 % 插图和附表清单
-% \listoffigures           % 插图清单
-% \listoftables            % 附表清单
+\listoffigures           % 插图清单
+\listoftables            % 附表清单
 % \listoffiguresandtables  % 插图和附表清单
 
 % 符号对照表
-% \input{data/denotation}
+\input{mydata/denotation}
 
 
 % 正文部分
@@ -82,20 +132,21 @@
 \input{mydata/chap6.tex}
 
 % 参考文献
-\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+\bibliography{myref/refs}  % 参考文献使用 BibTeX 编译
 % \printbibliography       % 参考文献使用 BibLaTeX 编译
 
 % 附录
 \appendix
 % \input{data/appendix-survey}       % 本科生：外文资料的调研阅读报告
-% \input{data/appendix-translation}  % 本科生：外文资料的书面翻译
+\input{translate/translation.tex}  % 本科生：外文资料的书面翻译
 % \input{data/appendix}
+% \input{arXiv-2504.19662v1/main.tex}
 
 % 其他部分
 \backmatter
 
 % 致谢
-% \input{data/acknowledgements}
+\input{mydata/acknowledgements}
 
 % 声明
 % 各类开题报告通常不需要

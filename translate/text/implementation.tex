@@ -1,0 +1,141 @@
+
+\section{\OSname{} 调度器实现}
+
+% \begin{itemize}
+% \item Supported multicore platforms: RP2040, ESP32-S3, (multicore RISC-V is WIP)
+% \end{itemize}
+
+% As of this writing, \OSname{} supports multicore scheduling on three popular hardware platforms/architectures: the RP2040 and RP2350 (dual-core ARM Cortex-M0+/ dual-core ARM Cortex-M33 resp.) and the \espsthree{} (dual-core Xtensa LX7). RISC-V multicore scheduling support in \OSname{} is currently a work in progress. %As our approach is portable by design, we expect RISC-V multicore scheduling support (e.g. on the Raspberry Pi Pico2) to be available soon. In the meantime, RISC-V is supported in single-core scheduling mode only. %and only on the ESP32 family for the time being. 
+
+% The RP2040, RP2350, and the \espsthree{} are well supported in the Rust ecosystem: the former through the Embedded-Rust working group and the \verb|rp-rs| project, the latter directly by Espressif through the \verb|esp-hal| project.
+% \OSname{} leverages this support in its implementation.
+截至本文撰写之时，\OSname{} 已在三种主流的硬件平台/架构上实现了多核调度功能：RP2040 和 RP2350（分别为双核 ARM Cortex-M0+/ 双核 ARM Cortex-M33）以及 \espsthree{}（双核 Xtensa LX7）。目前，\OSname{} 对 RISC-V 的多核调度支持仍在开发中。%鉴于我们的方法在设计上具有可移植性，我们预计 RISC-V 的多核调度支持（例如在 Raspberry Pi Pico2 上）将很快推出。与此同时，RISC-V 仅支持单核调度模式。%并且目前仅在 ESP32 系列上支持。
+
+RP2040、RP2350 和 \espsthree{} 在 Rust 生态中得到了良好的支持：前者通过 Embedded-Rust 工作组和 \verb|rp-rs| 项目获得支持，后者则通过 Espressif 的 \verb|esp-hal| 项目直接获得支持。
+\OSname{} 在其实现中充分利用了这些支持。
+
+% , and in the next sections we focus on describing \OSname{} multicore scheduling support for these different architectures/boards.
+
+\subsection{硬件抽象}
+
+% \begin{itemize}
+%     \item Impact of Rust: traits \& generics; leverage ecosystem (Embassy, esp-hal)
+% \end{itemize}
+
+% One of the main objectives of our work is clear hardware abstraction and the reduction of platform-specific code.
+% Adding support for another chip should be minimal effort, particularly when there is already chip support in the ecosystem.
+我们工作的主要目标之一是实现清晰的硬件抽象以及减少特定平台的代码。当生态中已经存在对某个芯片的支持时，增加对该芯片的支持应当是一项轻而易举的任务。
+% that can be leveraged.
+% \pagebreak
+% In \OSname{}, hardware abstraction occurs at two levels:
+
+% \textit{CPU architecture abstraction ---} At this layer, the scheduler logic for a CPU architecture, e.g., Cortex-M, is implemented. 
+% It involves all architecture-specific code to set up a thread stack, configure the exception used to trigger the scheduler, and the actual context-switching logic. 
+    
+% \textit{Chip-level abstraction ---} The platform-specific logic for SMP is implemented at this layer.
+%     % Concretely, an implementation must specify the number of available cores and a method to read out the current core identifier. 
+%     For multicore scheduling, two mechanisms are required,
+%     \begin{enumerate*}[label=(\roman*)]
+%     \item for starting up the other core(s), and 
+%     \item for invoking the scheduler on a specific core
+%     \end{enumerate*}. 
+%     % The latter is needed because, on the above architectural layer, a scheduler invocation only targets the scheduler on the current core. 
+%     % Indeed, \OSname{} scheduling logic requires that the scheduler of all cores can be triggered directly, because logic running on one core can affect the state of a thread that is running (or should be running) on another core.
+% %\end{itemize}
+
+% \OSname{} takes advantage of the Rust type system, by specifying the above abstractions as \emph{traits}~\cite{rust-book_traits}.
+在 \OSname{} 中，硬件抽象发生在两个层面：
+
+\textit{CPU 架构抽象 ——} 在这一层，实现了针对特定 CPU 架构（例如 Cortex-M）的调度器逻辑。它涵盖了设置线程栈、配置触发调度器的异常以及实际的上下文切换逻辑等所有与架构相关的代码。
+
+\textit{芯片级抽象 ——} 在这一层，实现了特定平台的对称多处理（SMP）逻辑。
+
+对于多核调度，需要两种机制：
+\begin{enumerate}[label=(\roman*)]
+    \item 用于启动其他核心（或多个核心）；
+    \item 用于在特定核心上调用调度器。
+\end{enumerate}
+
+\OSname{} 利用了 Rust 的类型系统，通过将上述抽象定义为 \emph{特性}（traits）~\cite{rust-book_traits} 来实现。
+% that are then implemented by each platform.
+% Compared to the alternative practice of simply duplicating function signatures for every platform, which is common, e.g., in hardware abstraction layers programmed in C, this design is more concise and ergonomic.
+% Adding support for another platform in the scheduler only requires two traits -- one per layer -- to be implemented.
+% As a result, the corresponding chip-level SMP implementations in \OSname{} are only 70 lines of Code (LOC) for the RP2040 and 66~LOC for the \espsthree{}.
+在调度器中为另一个平台添加支持，仅需实现两个特性——每个层面各一个。
+因此，在 \OSname{} 中，RP2040 的芯片级对称多处理（SMP）实现仅有 70 行代码，而 \espsthree{} 的实现则为 66 行代码。
+
+\subsection{特定平台的调度逻辑}
+
+% \noindent \textit{On the RP2040/RP2350 ---} The chip implements (in hardware) two FIFO queues between the physical cores, which are utilized by \OSname{} during startup and for scheduler invocations.
+% During startup, Core 1 remains in sleep mode until it receives the vector table, stack pointer, and entry function through the FIFO queue, based on a fixed protocol.
+% After startup, the FIFO queue is used to invoke the scheduler on the other core. 
+% A received message will trigger an interrupt, where the handler will set the local scheduler exception.
+\noindent \textit{在 RP2040/RP2350 上 ——} RP2040/RP2350 芯片在硬件层面实现了两个 FIFO 队列，用于连接两个物理核心。这些队列在 \OSname{} 的启动过程和调度器调用中发挥关键作用。在启动阶段，核心 1 保持睡眠模式，直到通过 FIFO 队列接收到向量表、栈指针和入口函数，这一过程遵循一个固定的协议。启动完成后，FIFO 队列用于在另一个核心上调用调度器。接收到的消息将触发一个中断，中断处理程序会设置本地调度器异常，从而启动调度过程。
+% \noteEB{is message passing between threads etc; something that should be described/characterized at some level, before it pops up here? Should Fig. 1 include a FIFO on each core?}
+% \noteEF{This specific section here concerns message passing between \textbf{Cores}, which is implemented in Hardware, and only on the RP2040. The ESP32-S3 doesn't implement such FIFO queues. Message passing between threads is possible through software channel, but I think that's othogonal to this section, and probably belongs into section \ref{sec:user-guide}?}
+
+% \noindent \textit{On the ESP32-S3 ---} The chip does not implement any inter-processor communication channel.
+% Instead, two different software-triggered CPU interrupts are used to invoke a scheduler on each core, respectively.
+% Startup of the second core on the \espsthree{} is implemented by writing the address of the entry function into the boot address of Core 1, then resetting and unstalling the core.
+% The entry function sets up the vector table address and the stack pointer for this core, and then runs our threading startup logic.
+
+\noindent \textit{在 ESP32-S3 上 ——} 该芯片未实现任何处理器间通信通道。相反，它通过触发两个不同的软件中断来分别在每个核心上调用调度器。在 \espsthree{} 上启动第二个核的启动是通过将入口函数的地址写入核心 1 的启动地址，然后重置并解除该核心的停机状态来实现的。入口函数会设置该核的向量表地址和栈指针，随后运行我们的线程启动逻辑。
+
+\subsection{中断处理}
+
+% On the RP2040/RP2350, each core is equipped with its own ARM Nested Vectored Interrupt
+% Controller (NVIC). 
+% On the \espsthree{}, each core has its own configurable interrupt matrix. 
+% On both chips, nested interrupts are supported, so that a lower-priority interrupt can be preempted by a higher-priority one.
+% External interrupts are routed to both cores,
+% but only enabled on one core for handling, as described below.
+在 RP2040/RP2350 上，每个核心都配备了各自的 ARM 嵌套向量中断控制器（NVIC）。
+在 \espsthree{} 上，每个核心都有其可配置的中断矩阵。
+在两种芯片上，都支持嵌套中断，使得低优先级的中断可以被高优先级的中断抢占。
+外部中断被路由到两个核心，但仅在一个核心上启用以进行处理，具体如下所述。
+
+% During startup, peripherals are initialized either in interrupt mode on Core 0 before threading is started, or by one high-priority thread. % whose core affinity can optionally be set.
+% This initialization configures and enables the required interrupts on the core it executes on, which will then be the core that handles the related interrupts.
+
+% Still, both cores share the same interrupt vector table, so it is also possible to manually mask and unmask interrupts on individual cores to configure where an interrupt should be handled.
+在启动期间，外设初始化要么在核心 0 上以中断模式进行，且在启动线程之前完成，要么由一个高优先级线程完成。% 其核心亲和性可以可选地设置。
+这种初始化会在其执行的核心上配置并启用所需的中断，而该核心随后将负责处理相关的中断。
+
+尽管如此，两个核心共享同一个中断向量表，因此也可以手动在各个核心上屏蔽和解除屏蔽中断，以配置中断的处理位置。
+
+\subsection{调度器中的同步}
+
+% The scheduler is implemented through a single structure that contains the runqueue, TCBs, and other scheduling data, and implements all scheduling logic.
+% This structure is protected by a wrapper type that ensures that all accesses to the scheduler are executed inside a critical section and that no reference to the scheduler can be obtained outside of it.
+调度器通过一个单一结构实现，该结构包含运行队列、线程控制块（TCBs）以及其他调度数据，并实现了所有调度逻辑。
+该结构被一个包装类型保护，确保所有对调度器的访问都在临界区中执行，并且无法在临界区之外获得对调度器的引用。
+% Such access is realized in Rust closures~\cite{rust-book_closures},.
+% that are provided with an immutable or mutable reference to the scheduler structure as input.
+% The Rust compiler prevents the reference from being moved outside this closure in any way, thus access is only possible for the duration of the closure and therefore only while inside the critical section.
+
+\iffalse
+\subsection{Lock Guards}
+
+Lock guards are common design pattern for synchronization primitives and mutual exclusion in Rust.
+In case of \OSname{}, lock guards are used in both the \verb|critical-section| crate~\cite{critical-section} that \OSname{} is using, as well as \OSname{}'s own mutex implementation.
+% ~\noteEB{Link/ref to crate? And: it struck me that some readers might not know what a "crate" is. (i) what doc should we cite on crates? (ii) where should we "introduce" the notion of crate? I get the feeling "crate" should be hinted at way before this stage. Maybe in section 2, e.g. mention that we aim to "take full advantage of Rust specificity beyond memory safety, for instance the crate system, and trait zero-cost abstractions"?}
+The implementation takes advantage of Rust's ownership concepts and scoping rules for ergonomic and fail-safe lock usage. The life time of a lock guard corresponds to the time a lock is held.
+On one hand, lock guards ensure that an acquired lock or critical section is always released again, even in case of code panics. On the other hand, lock guards facilitate access to the protected data – in Rust, synchronization primitives like mutexes typically own the data they protect. %\noteKS { @Elena please double check this is not cutting too much}
+\fi
+\iffalse 
+where each variable has exactly one owner, which may be, for example, the function it is declared in.
+If the variable goes out of scope, e.g., because the function returns, the variable is destructed and its memory freed.
+However, before doing so, the destructor will call a \verb|drop| function first on the type itself, and then recursively on all its inner types. 
+This \verb|drop| function can be implemented by the crate that defines the type, to add logic that should run just before the type is destructed.
+
+In the case of lock guards, the \verb|drop| function is implemented to release the associated lock, and more precisely, this is also \textit{the only way to release a lock}.
+If the lock should be released before the guard would usually go out of scope, it can be dropped manually, after which the guard is no longer accessible.
+Thus, there is no way the protected inner data is accidentally accessed after the lock was already released.
+
+
+\noteEF{Koen noted that this section may not be relevant/ interesting to the user. Purpose was to show how Rust impact the implementation of synchronization primitives and the gain from that. But if we're short on space, maybe remove this section?}
+\noteEB{Let's first try to make it shorter, and tighten the rest too. Remove in last resort. Rust specifics = good}
+
+% - mention stuff that specific to embedded Rust in that context
+%    - discuss challenged and opportunities that come from Rust
+\fi
