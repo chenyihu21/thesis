@@ -1,4 +1,7 @@
-\contentsline {table}{\numberline {3.1}{\ignorespaces 各架构虚拟空间设置}}{27}{table.caption.36}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces DmaAllocator 结构体接口}}{16}{table.caption.26}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces 各架构虚拟空间设置}}{24}{table.caption.33}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces 各架构单核运行 1000 次操作的运行时间（单位：ms）}}{44}{table.caption.47}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces 各架构四核运行 1000 次操作的运行时间（单位：ms）}}{44}{table.caption.48}%
 \let \contentsline \ttl@gobblecontents 
 \contentsfinish 
 \contentsfinish 

@@ -45,7 +45,7 @@ rust\_entry 函数位于 axruntime 模块中，它会依据不同的 Cargo 特�
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{arch.png}
+  \includegraphics[width=0.8\linewidth]{ArceOsmm.png}
   \caption{ArceOS 内存管理系统}
   \label{fig:ArceOS-mm}
 \end{figure}
@@ -63,7 +63,7 @@ axhal 组件提供了一层针对不同硬件平台的硬件封装，它为指�
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{axhal-arch.png}
+  \includegraphics[width=0.7\linewidth]{axhal-arch-2.png}
   \caption{axhal 内存管理相关结构图}
   \label{fig:axhal-arch}
 \end{figure}
@@ -88,7 +88,7 @@ RISC-V64 架构则使用 Sv39 结构，采用 3 级页表，支持 39 位虚拟�
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{axalloc-arch.png}
+  \includegraphics[width=1\linewidth]{axalloc-arch-2.png}
   \caption{axalloc 结构图}
   \label{fig:axalloc-arch}
 \end{figure}
@@ -149,13 +149,13 @@ TLSF 算法具有高效的分配速度和高内存利用率，可以灵活应对
 
 
 axmm 模块的核心是 AddrSpace 结构体，它表示一个虚拟内存地址空间，包含虚拟地址范围、内存区域集合以及页表。通过该结构体提供的接口，可以对虚拟内存地址空间进行管理，包括创建、映射、解除映射、读写数据等操作。
-AddrSpace 的具体接口如图\ref{fig:AddrSpace}所示：
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{addrspace.pdf}
-    \caption{AddrSpace 结构体接口}
-    \label{fig:AddrSpace}
-\end{figure}
+AddrSpace 的具体接口如附录中图\ref{fig:AddrSpace}所示。
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1\linewidth]{addrspace.pdf}
+%     \caption{AddrSpace 结构体接口}
+%     \label{fig:AddrSpace}
+% \end{figure}
 
 实现 AddrSpace 结构体及其接口对于构建一个高效、灵活且安全的虚拟内存管理系统具有极其重要的意义。一方面，通过为每个进程分配独立的虚拟地址空间，AddrSpace 不仅实现了内核与用户空间的隔离，还确保了进程之间的相互独立，从而防止了进程间的非法访问和潜在的破坏行为。
 
@@ -170,15 +170,15 @@ AddrSpace 的具体接口如图\ref{fig:AddrSpace}所示：
 内存区域对应的映射类型在内存区域对象创建时，即调用 AddrSpace 的 map\_linear 或 map\_alloc 方法申请空间并进行映射时指定。
 
 \subsection{axdma}
-axdma 模块实现了 DMA 内存管理，提供了直接内存访问的接口。DMA（Direct Memory Access，直接内存访问） 是一种硬件特性，允许某些硬件子系统在不经过 CPU 控制的情况下直接访问系统内存，
-DMA 通常用于高速数据传输，例如从硬盘读取数据到内存，或者从内存将数据发送到网络接口。
+axdma 模块实现了 DMA 内存管理，提供了直接内存访问的接口。DMA（Direct Memory Access，即直接内存访问）是一种允许特定硬件子系统绕过CPU直接访问系统内存的硬件特性，
+通常用于高速数据传输，例如从硬盘读取数据到内存，或者从内存将数据发送到网络接口。
 
 在传统的数据传输中，CPU 需要逐字节地从外设读取数据，然后将其写入内存，或者从内存读取数据后写入外设。这种操作不仅效率低下，还会占用大量的 CPU 时间。而 DMA 允许外设直接访问内存，
 无需 CPU 参与，从而提高了数据传输的速度和效率，并释放了 CPU 的计算资源，使其可以处理其他任务。
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{axdma-arch.png}
+    \includegraphics[width=0.7\linewidth]{axdma-arch-2.png}
     \caption{axdma 结构图}
     \label{fig:axdma-arch}
 \end{figure}
@@ -189,13 +189,32 @@ DMA 分配器还会处理 DMA 操作中的地址转换问题，将虚拟地址�
 DMAInfo 结构体则记录了用于 DMA 操作的内存区域相关的信息，包括 CPU 访问该区域的虚拟地址和该区域在总线上的物理地址。
 同时，DMA 分配器分配的内存需要标记为 UNCACHED，以避免缓存一致性问题，这需要虚拟内存管理模块（axmm）提供的接口来完成。
 
-DMA 模块的具体接口如图\ref{fig:DmaAllocator}所示：
-\begin{figure}[H]
+DMA 模块的具体接口如表\ref{tab:DmaAllocator}所示：
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{axdma.png}
+%     \caption{DmaAllocator 结构体接口}
+%     \label{fig:DmaAllocator}
+% \end{figure}
+
+\begin{table}
     \centering
-    \includegraphics[width=0.7\linewidth]{axdma.png}
     \caption{DmaAllocator 结构体接口}
-    \label{fig:DmaAllocator}
-\end{figure}
+    \begin{tabular}{cc}
+        \toprule
+        接口名 & 功能 \\ 
+        \midrule
+        alloc\_coherent & 分配用于DMA操作的内存区域 \\ 
+        alloc\_coherent\_bytes & 分配小内存块（<4KB） \\ 
+        alloc\_coherent\_pages & 分配大内存块（≥4KB） \\ 
+        update\_flags & 修改指定内存区域的映射标志 \\ 
+        dealloc\_coherent & 释放之前分配的DMA内存区域 \\ 
+        virt\_to\_bus & 将虚拟地址转换为总线地址，用于设备访问 \\ 
+        layout\_pages & 计算给定布局所需的页数 \\ 
+        \bottomrule
+    \end{tabular}
+    \label{tab:DmaAllocator}
+\end{table}
 
 \section{ArceOS 内存管理机制}
 
@@ -213,7 +232,7 @@ DMA 模块的具体接口如图\ref{fig:DmaAllocator}所示：
 在本章第一节中我们提到了 ArceOS 的启动和初始化过程，而在这里我们将对其中与内存分页相关的部分进行详细分析：
 架构的初始化函数 \_start 中进行了启动页表和内存管理单元的初始化，为 QEMU 虚拟机的物理内存等关键区域构建映射，设置根页表地址并刷新 TLB，完成分页的早期启动阶段。
 这一阶段是 ArceOS 默认开启的，构建的映射为恒等映射，虚拟地址和物理地址相同，主要用于内核的启动和初始化。
-\begin{lstlisting}[language=c, caption=\_start]
+\begin{lstlisting}[language=c, caption= ArceOS 中 \_start 启动函数内存初始化相关代码]
 phys_virt_offset = const PHYS_VIRT_OFFSET,
 boot_stack_size = const TASK_STACK_SIZE,
 boot_stack = sym BOOT_STACK,
@@ -227,23 +246,23 @@ init_mmu = sym init_mmu,
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{init.png}
+    \includegraphics[width=0.8\linewidth]{paginginit-2.png}
     \caption{分页的重建映射阶段}
     \label{fig:init}
 \end{figure}
 
-开启 paging 特性且上层架构或者应用需要对内存空间进行操作时，会调用 AddrSpace 的相应接口，如 find\_free\_area（寻找空闲内存区域）、map\_linear（建立线性映射）、map\_page（建立分配映射）等方法，这些方法会根据具体的内存操作需求，对页表和虚拟地址空间进行操作，并调用全局内存分配器进行物理内存的分配和释放。全局分配器在分配时会先尝试从字节分配器分配，如果字节分配器内存不足，则计算需要多少内存，从页面分配器分配页面后将页面添加到字节分配器重新进行分配，此方法允许高效处理小型和大型分配，同时保持合理的内存使用率。
+开启 paging 特性且上层架构或者应用需要对内存空间进行操作时，会调用 AddrSpace 的相应接口，如 find\_free\_area（寻找空闲内存区域）、map\_linear（建立线性映射）、map\_alloc（建立分配映射）等方法，这些方法会根据具体的内存操作需求，对页表和虚拟地址空间进行操作，并调用全局内存分配器进行物理内存的分配和释放。全局分配器在分配时会先尝试从字节分配器分配，如果字节分配器内存不足，则计算需要多少内存，从页面分配器分配页面后将页面添加到字节分配器重新进行分配，此方法允许高效处理小型和大型分配，同时保持合理的内存使用率。
 
 同时，ArceOS 还在 AddrSpace 结构体中提供了页面异常的处理接口，例如当访问的虚拟地址对应的物理页不存在时，会触发缺页异常，此时会调用 AddrSpace 的 handle\_page\_fault 函数处理缺页异常，
 该函数会对后端为 Alloc 类型的地址，调用 axalloc 中的全局内存分配器进行物理页的分配，并通知 axhal 中的页表更新映射关系。对于后端为 Linear 类型或者需要填充的地址，则会处理失败，返回 false，
-因为这两类的地址在创建时就应完成物理页的分配和映射，缺页异常的处理不适用。AddrSpace 的 handle\_page\_fault 函数的流程图如图~\ref{fig:handle-page-fault-arceos}所示。
+因为这两类的地址在创建时就应完成物理页的分配和映射，缺页异常的处理不适用。AddrSpace 的 handle\_page\_fault 函数的流程图如附录中图~\ref{fig:handle-page-fault-arceos}所示。
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\linewidth,height = 17cm, keepaspectratio]{pagefault-arceos.png}
-    \caption{handle\_page\_fault 函数流程图}
-    \label{fig:handle-page-fault-arceos}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.7\linewidth,height = 17cm, keepaspectratio]{pagefault-arceos.png}
+%     \caption{handle\_page\_fault 函数流程图}
+%     \label{fig:handle-page-fault-arceos}
+% \end{figure}
 
 
 借助缺页异常的处理，ArceOS 还实现了 Lazy Map 机制，即当创建不需要立即填充的虚拟内存区域时，不会立即分配物理页，而是在第一次访问该虚拟地址时才触发缺页异常，进行分配和映射。

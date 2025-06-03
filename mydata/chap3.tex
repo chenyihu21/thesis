@@ -33,7 +33,7 @@ starry-next (StarryOS) 是构建在 ArceOS 基础之上的操作系统内核。�
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth, keepaspectratio]{starry-arch.png}
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{starry-arch-2.png}
     \caption{starry-next 宏内核架构}
     \label{fig:starry-next}
 \end{figure}
@@ -55,12 +55,12 @@ api 层的函数会检查参数的类型、取值范围等是否符合系统调�
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{syscall.png}
+    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-2.png}
     \caption{系统调用流程}
     \label{fig:syscall}
 \end{figure}
 
-\subsection{加载程序到内存空间}
+\section{加载程序到内存空间}
 
 在上一节的初始化过程中提到，要运行应用程序，首先需要将其加载到内存空间中。本节将详细介绍 starry-next 是如何加载应用程序到内存空间并执行的。
 
@@ -74,22 +74,22 @@ api 层的函数会检查参数的类型、取值范围等是否符合系统调�
 最后调用 axtask::spawn\_task 接口将任务添加到任务调度器中，等待调度器调度执行。
 run\_user\_app 和 load\_user\_app 函数的流程如图\ref{fig:run-user-app}和\ref{fig:load-user-app}所示。
 
-\begin{figure}
-\centering %图片全局居中
-%并排几个图，就要写几个minipage
-\begin{minipage}[b]{0.3\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
-\centering %图片局部居中
-\includegraphics[width=1\textwidth]{run-user-app.png} %此时的图片宽度比例是相对于这个minipage的，不是全局
-\caption{run\_user\_app 函数流程图}
-\label{fig:run-user-app}
-\end{minipage}
-\begin{minipage}[b]{0.65\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
-\centering %图片局部居中
-\includegraphics[width=1\textwidth]{load-user-app.png}%此时的图片宽度比例是相对于这个minipage的，不是全局
-\caption{load\_user\_app 函数流程图}
-\label{fig:load-user-app}
-\end{minipage}
-\end{figure}
+% \begin{figure}
+% \centering %图片全局居中
+% %并排几个图，就要写几个minipage
+% \begin{minipage}[b]{0.3\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+% \centering %图片局部居中
+% \includegraphics[width=1\textwidth]{run-user-app.png} %此时的图片宽度比例是相对于这个minipage的，不是全局
+% \caption{run\_user\_app 函数流程图}
+% \label{fig:run-user-app}
+% \end{minipage}
+% \begin{minipage}[b]{0.65\textwidth} %所有minipage宽度之和要小于1，否则会自动变成竖排
+% \centering %图片局部居中
+% \includegraphics[width=1\textwidth]{load-user-app.png}%此时的图片宽度比例是相对于这个minipage的，不是全局
+% \caption{load\_user\_app 函数流程图}
+% \label{fig:load-user-app}
+% \end{minipage}
+% \end{figure}
 
 
 \section{starry-next 内存管理模块}
@@ -98,7 +98,7 @@ run\_user\_app 和 load\_user\_app 函数的流程如图\ref{fig:run-user-app}�
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{mm-arch2.png}
+    \includegraphics[width=1\linewidth, keepaspectratio]{mm-arch3.png}
     \caption{starry-next 内存管理模块结构}
     \label{fig:mm-arch}
 \end{figure}
@@ -135,7 +135,7 @@ starry-next 的内存管理基本上复用了 ArceOS 的内存管理机制:使�
 
 \subsection{内存布局}
 
-不启动 ArceOs 的 paging 特性时，应用和内核在同一空间中运行，系统直接使用物理地址。物理空间的结构如图\ref{fig:phy-layout2}所示。
+不启动 ArceOS 的 paging 特性时，应用和内核在同一空间中运行，系统直接使用物理地址。物理空间的结构如图\ref{fig:phy-layout2}所示。
 在 Cargo 项目启动时，axhal 组件的 build.rs 构建文件会根据根据 linker.lds.S 文件中的链接脚本，将物理空间划分为多个部分——内核部分从指定的基地址开始，首先放置可执行代码段（.text），然后是只读数据段（.rodata）和初始化函数数组（.init\_array）。接着是可读写数据段（.data），线程局部存储相关段（.tdata 和 .tbss），以及每个CPU核心的私有数据段（.percpu）。最后是未初始化数据段（.bss），其中包含了启动栈空间，设备内存则位于 0 地址和内核空间之间。整个布局严格遵循4K对齐，并在最后定义了一些与中断处理、系统调用等相关的自定义段。
 
 \begin{figure}[H]
@@ -173,21 +173,23 @@ starry-next 启动了 paging 特性，为每个应用程序分配一个独立的
 %     \label{fig:virt-layout}
 % \end{figure}
 
-\begin{table}[!ht]
+\begin{table}
     \centering
-    \begin{tabular}{lllll}
-    \hline
-        ~ & x86\_64 & RISC-V 64 & AArch64 & LoongArch64  \\ \hline
-        User space base & 0x1000 & 0x1000 & 0x1000 & 0x1000  \\ \hline
-        User space size & 128 TB & 4 GB & 128 TB & 4 GB  \\ \hline
-        User interpreter base & 64 MB & 64 MB & 64 MB & 64 MB  \\ \hline
-        User heap base & 1 GB & 1 GB & 1 GB & 1 GB  \\ \hline
-        User heap initial size & 64 KB & 64 KB & 64 KB & 64 KB  \\ \hline
-        User stack top & 0x7fff\_0000\_0000 & 0x4\_0000\_0000 & 0x7fff\_0000\_0000 & 0x4\_0000\_0000  \\ \hline
-        User stack size & 64 KB & 64 KB & 64 KB & 64 KB  \\ \hline
-        Kernel stack size & 256 KB & 256 KB & 256 KB & 256 KB \\ \hline
-    \end{tabular}
     \caption{各架构虚拟空间设置}
+    \begin{tabular}{ccccc}
+        \toprule
+        ~ & x86\_64 & RISC-V 64 & AArch64 & LoongArch64  \\ 
+        \midrule
+        User space base & 0x1000 & 0x1000 & 0x1000 & 0x1000  \\ 
+        User space size & 128 TB & 4 GB & 128 TB & 4 GB  \\ 
+        User interpreter base & 64 MB & 64 MB & 64 MB & 64 MB  \\ 
+        User heap base & 1 GB & 1 GB & 1 GB & 1 GB  \\ 
+        User heap initial size & 64 KB & 64 KB & 64 KB & 64 KB  \\ 
+        User stack top & 0x7fff00000000 & 0x400000000 & 0x7fff00000000 & 0x400000000  \\ 
+        User stack size & 64 KB & 64 KB & 64 KB & 64 KB  \\ 
+        Kernel stack size & 256 KB & 256 KB & 256 KB & 256 KB \\ 
+        \bottomrule
+    \end{tabular}
     \label{tab:virt-layout-config}
 \end{table}
 

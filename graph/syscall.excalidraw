@@ -377,9 +377,9 @@
     {
       "id": "tTIwnzoVe7huN78wyEVqw",
       "type": "text",
-      "x": 1212.0512771606445,
+      "x": 1208.5912780761719,
       "y": 390.5001679382324,
-      "width": 62.45994567871094,
+      "width": 69.37994384765625,
       "height": 27,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -394,20 +394,20 @@
       "index": "bDl",
       "roundness": null,
       "seed": 1350863771,
-      "version": 8,
-      "versionNonce": 2142951957,
+      "version": 12,
+      "versionNonce": 1409250094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1747219495746,
+      "updated": 1748678920073,
       "link": null,
       "locked": false,
-      "text": "Arceos",
+      "text": "ArceOS",
       "fontSize": 20,
       "fontFamily": 6,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "i6CLkXE3ddfk8TGGC4Ya2",
-      "originalText": "Arceos",
+      "originalText": "ArceOS",
       "autoResize": true,
       "lineHeight": 1.35
     },
@@ -1016,7 +1016,8 @@
     "gridSize": 20,
     "gridStep": 5,
     "gridModeEnabled": false,
-    "viewBackgroundColor": "#ffffff"
+    "viewBackgroundColor": "#ffffff",
+    "lockedMultiSelections": {}
   },
   "files": {}
 }

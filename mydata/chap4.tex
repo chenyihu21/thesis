@@ -1,9 +1,36 @@
 % !TeX root = ../cyh.tex
 
 
-\chapter{内存管理模块接口的设计与实现}
+\chapter{内存管理子系统接口的设计与实现}
 
-\section{内存管理模块直接相关的系统调用}
+\section{内存管理子系统概述}
+
+前两章中我们分别介绍了 ArceOS 基座中的内存管理组件和 starry-next 的内存管理模块，
+而本小节则将二者串联起来，从 crate （即 Rust 模块，本节简称为模块）层面介绍内存管理子系统的结构。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{subsystem2.png}
+    \caption{内存管理子系统结构图}
+    \label{fig:subsystem}
+\end{figure}
+
+如图\ref{fig:subsystem}所示，starry-next 中的 API 模块为应该提供系统调用支持，
+并根据需要调用 Core 模块中的方法。而在这两个模块的功能又依赖于 ArceOS 中的模块，
+例如 axmm 模块提供了内存管理的基本功能，axdma 模块提供了 DMA 相关的功能。
+ArceOS 中的模块间也存在相互依赖关系，例如 axmm 和 axdma 依赖 axalloc 提供的全局内存分配器，
+并且需要 axhal 提供不同架构的页表抽象相关功能和 axconfig 提供相关配置信息。
+在 ArceOS 的下层，是 Rust 和第三方库的支持，例如 page\_table\_multiarch 提供了页表抽象的支持，
+memory\_addr 和 memory\_set 提供内存地址和内存集合的抽象，lazyinit 和 kspin 提供了懒初始化和自旋锁的支持等。
+
+内核启动后，先通过 axhal 和 axruntime 进行初始化，包括页表初始化、全局内存分配器的初始化和分配内核空间等。
+然后启动 starry-next 的 main 函数，加载用户程序、分配用户空间和通过任务管理子系统进行任务调度。
+在用户程序运行过程中，如果需要进行内存分配或释放等操作，则通过 mmap、munmap 等系统调用进入 starry-next 的 API 模块，
+进而进入 ArceOS 的 axmm 等模块进行内存管理操作。
+任务结束后，任务管理子系统会调用 axmm 等模块进行内存等资源的释放和回收。
+
+
+\section{内存管理子系统直接相关的系统调用}
 
 \subsection{mmap 系统调用}
 mmap 用于将文件或设备内存映射到进程的地址空间。它在 Linux 和类 Unix 系统中广泛使用，主要用于高效地读写文件、实现内存共享以及分配匿名内存等。
@@ -11,8 +38,8 @@ mmap 用于将文件或设备内存映射到进程的地址空间。它在 Linux
 mmap 系统调用的原型如下：
 
 
-\begin{lstlisting}[language=C, caption=mmap]
-    void *mmap(void addr[.length], size_t length, int prot, int flags, int fd, off_t offset);
+\begin{lstlisting}[language=C, caption=mmap 系统调用函数原型]
+void *mmap(void addr[.length], size_t length, int prot, int flags, int fd, off_t offset);
 \end{lstlisting}
 
 
@@ -23,21 +50,22 @@ mmap 系统调用的返回值是一个指向内存映射区域的指针，该指
 
 内存映射主要分为两种类型：匿名映射是指不与任何文件关联的内存映射，通常用于分配动态内存，类似于 malloc，但提供了更多的灵活性和控制能力，例如多个进程可以共享同一个内存映射区域；文件映射是指将文件的内容映射到内存中，这样就可以像访问内存一样访问文件的内容，通常用于实现文件的高效读写。
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-mmap.png}
-    \caption{mmap 系统调用流程}
-    \label{fig:mmap}
-\end{figure}
-
 如图\ref{fig:mmap}所示，在 starry-next 中，mmap 系统调用的实现主要包括以下几个步骤：首先解析参数并检查其有效性；然后进行地址对齐处理，根据是否指定映射起始地址选择将映射长度向上对齐到 4KB （页面大小）或将映射的起始和结束地址分别对齐到页面边界；接着确定映射的真正地址：如果 flag 中设置了 MAP\_FIXED 标志，则使用对齐后的 addr 地址作为映射的起始地址，并且如果 addr 和 length 指定的内存区域与任何现有的映射重叠，那么现有映射的重叠部分将被丢弃，否则，内核会在指定地址附近或者整个用户地址空间中寻找符合条件的空闲地址，并调用 AddrSpace 结构体的 map\_alloc 方法创建映射；最后返回起始地址；如果参数中 fd 不为 -1 且 MAP\_ANONYMOUS 标志未设置，即该映射是文件映射，则在返回前需要从文件中读取数据填充到内存中。
 
 map\_alloc 是 ArceOS 提供的一个方法，用于创建内存映射。会先验证要映射的区域，然后创建一个新的内存区域，并将其映射到页表中。
 在构建映射的过程中，会根据映射的类型（线性映射或分配映射），选择不同的后端进行处理。同时还需要为映射区域分配物理页，并在页表中记录。
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{syscall-mmap.png}
+    \caption{mmap 系统调用流程}
+    \label{fig:mmap}
+\end{figure}
+
+
 需要注意的是，由于 Lazy Map 机制的存在，不需要填充的内存区域不会立即被分配物理页，而是在第一次访问该内存区域并触发页面异常时才会分配物理页。该机制可能会导致内核在访问内存区域时出现 NotMapped 错误，因此需要在代码中调用 handle\_page\_fault 函数，为内存区域分配物理页，具体可以参考 AddrSpace 结构体的 clone\_or\_err 方法。
 
-\begin{lstlisting}[language=c, caption=deal with NotMapped]
+\begin{lstlisting}[language=c, caption=Lazy Map 机制下访问内存区域的处理]
 let new_addr = match new_aspace.pt.query(vaddr) {
     Ok((paddr, _, _)) => paddr,
     // If the page is not mapped, try map it.
@@ -60,21 +88,23 @@ let new_addr = match new_aspace.pt.query(vaddr) {
 \subsection{munmap 系统调用}
 
 munmap 用于解除进程地址空间中的内存映射。munmap 系统调用的原型如下：
-\begin{lstlisting}[language=c, caption=munmap]
+\begin{lstlisting}[language=c, caption=munmap 系统调用函数原型]
 int munmap(void addr[.length], size_t length);
 \end{lstlisting}
 munmap 系统调用共有 2 个参数，其中 addr 用于指定要解除映射的内存区域的起始地址，length 用于指定要解除映射的内存区域的长度。
 
 munmap 系统调用的返回值是一个整数，通常为 0 表示成功，-1 表示失败。
 
-\begin{figure}[H]
+
+如图\ref{fig:munmap}，starry-next 中，munmap 系统调用的实现主要包括以下几个步骤：首先解析参数并检查其有效性；然后调用 AddrSpace 结构体的 unmap 方法，该方法会将指定的内存区域从页表中解除映射；刷新TLB；最后返回 0 表示成功。
+
+\begin{figure}
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-unmap.png}
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{syscall-unmap.png}
     \caption{munmap 系统调用流程}
     \label{fig:munmap}
 \end{figure}
 
-如图\ref{fig:munmap}，starry-next 中，munmap 系统调用的实现主要包括以下几个步骤：首先解析参数并检查其有效性；然后调用 AddrSpace 结构体的 unmap 方法，该方法会将指定的内存区域从页表中解除映射；刷新TLB；最后返回 0 表示成功。
 
 ArceOS 对 munmap 系统调用的支持方式与 mmap 系统调用类似，都是通过 AddrSpace 结构体向上提供接口，通过映射后端调用全局分配器和页表进行内存解除映射并释放物理页。 
 
@@ -85,9 +115,9 @@ ArceOS 对 munmap 系统调用的支持方式与 mmap 系统调用类似，都�
     \item 前后覆盖：要解除映射的内存区域包括当前存在的内存区域的左边界或右边界，需要调整当前存在的内存区域的起始地址或结束地址，如图中第三和第四项。
 \end{enumerate}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-munmap2.png}
+    \includegraphics[width=0.7\linewidth, keepaspectratio]{syscall-munmap2.png}
     \caption{munmap 处理交叉区域}
     \label{fig:munmap2}
 \end{figure}
@@ -95,7 +125,9 @@ ArceOS 对 munmap 系统调用的支持方式与 mmap 系统调用类似，都�
 
 \subsection{brk 系统调用}
 
-\begin{lstlisting}[language=c, caption=brk]
+brk 用于改变进程的堆顶位置。其原型如下：
+
+\begin{lstlisting}[language=c, caption=brk 系统调用函数原型]
 int brk(void addr);
 \end{lstlisting}
 
@@ -109,7 +141,7 @@ starry-next 中，brk 系统调用通过设置任务信息结构体的 heap\_top
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth, keepaspectratio]{syscall-brk.png}
+    \includegraphics[width=0.4\linewidth, keepaspectratio]{syscall-brk-2.png}
     \caption{brk 系统调用流程}
     \label{fig:brk}
 \end{figure}
@@ -117,7 +149,7 @@ starry-next 中，brk 系统调用通过设置任务信息结构体的 heap\_top
 \subsection{mprotect 系统调用}
 
 mprotect 用于修改指定内存区域的保护属性。mprotect 系统调用的原型如下：
-\begin{lstlisting}[language=c, caption=mprotect]
+\begin{lstlisting}[language=c, caption=mprotect 系统调用函数原型]
 int mprotect(void addr[.len], size_t len, int prot);
 \end{lstlisting}
 
@@ -134,12 +166,12 @@ mprotect 系统调用的返回值是一个整数，通常为 0 表示成功，-1
     \label{fig:mprotect}
 \end{figure}
 
-\section{内存管理模块间接相关的系统调用}
+\section{内存管理子系统间接相关的系统调用}
 
 \subsection{sysinfo 系统调用}
 
 sysinfo 系统调用用于获取系统的信息，如内存使用情况、CPU 信息、文件系统信息等。sysinfo 系统调用的原型如下：
-\begin{lstlisting}[language=c, caption=sysinfo]
+\begin{lstlisting}[language=c, caption=sysinfo 系统调用函数原型]
 int sysinfo(struct sysinfo *info);
 \end{lstlisting}
 sysinfo 系统调用只有一个参数，即 info，用于存储系统信息的结构体指针。该结构体包含多个字段，例如 uptime（系统运行时间）、loads（1、5 和 15 分钟内的平均负载）、totalram 和 freeram（总内存和空闲内存）、sharedram 和 bufferram（共享内存和缓冲区内存）等。
@@ -159,7 +191,7 @@ sysinfo 系统调用与包括内存管理在内的组件相关，例如通过 Ar
 \subsection{arch\_prctl 系统调用}
 
 arch\_prctl 系统调用用于设置或获取进程的特定架构相关的参数。其系统调用的原型如下：
-\begin{lstlisting}[language=c, caption=arch\_prctl]
+\begin{lstlisting}[language=c, caption=arch\_prctl 系统调用函数原型]
 int syscall(SYS_arch_prctl, int op, unsigned long addr);
 int syscall(SYS_arch_prctl, int op, unsigned long *addr);
 \end{lstlisting}
@@ -173,7 +205,7 @@ GetGs 和 SetGs 操作用于读取和设置进程的内核 GS 段寄存器的值
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-arch-prctl.png}
+    \includegraphics[width=1\linewidth, keepaspectratio]{syscall-arch-prctl-2.png}
     \caption{arch\_prctl 系统调用流程}
     \label{fig:arch-prctl}
 \end{figure}
@@ -181,10 +213,9 @@ GetGs 和 SetGs 操作用于读取和设置进程的内核 GS 段寄存器的值
 \subsection{prlimit64 系统调用}
 
 prlimit64 系统调用用于设置或获取进程的资源限制，涉及操作系统的多个模块，例如栈大小和进程地址空间资源与内存管理模块有关，进程最大打开文件数与文件系统有关。prlimit64 系统调用的原型如下：
-\begin{lstlisting}[language=c, caption=prlimit64]
-int prlimit(pid_t pid, int resource,
-            const struct rlimit *_Nullable new_limit,
-            struct rlimit *_Nullable old_limit);
+\begin{lstlisting}[language=c, caption=prlimit64 系统调用函数原型]
+#include <sys/resource.h>
+int prlimit64(pid_t pid, int resource, const struct rlimit64 *new_limit, struct rlimit64 *old_limit);
 \end{lstlisting}
 
 prlimit64 接受四个参数：pid——目标进程的进程ID，可以是当前进程或另一个进程）、
@@ -199,7 +230,7 @@ RLIMIT\_CPU（CPU 时间）、RLIMIT\_DATA（数据段大小）等）、new\_lim
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth, keepaspectratio]{syscall-prilimit64.png}
+    \includegraphics[width=0.7\linewidth, height=12.5cm]{syscall-prilimit64.png}
     \caption{prlimit64 系统调用流程}
     \label{fig:prlimit64}
 \end{figure}

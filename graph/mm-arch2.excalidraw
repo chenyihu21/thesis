@@ -718,20 +718,20 @@
       "index": "bF3",
       "roundness": null,
       "seed": 1030634427,
-      "version": 8,
-      "versionNonce": 2066437115,
+      "version": 14,
+      "versionNonce": 1117720688,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1747221520075,
+      "updated": 1748495361534,
       "link": null,
       "locked": false,
-      "text": "页面错误处理",
+      "text": "页面异常处理",
       "fontSize": 20,
       "fontFamily": 6,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "lpNaGHjVYfqU6FJiSJSU0",
-      "originalText": "页面错误处理",
+      "originalText": "页面异常处理",
       "autoResize": true,
       "lineHeight": 1.35
     },
@@ -3336,7 +3336,8 @@
     "gridSize": 20,
     "gridStep": 5,
     "gridModeEnabled": false,
-    "viewBackgroundColor": "#ffffff"
+    "viewBackgroundColor": "#ffffff",
+    "lockedMultiSelections": {}
   },
   "files": {}
 }
